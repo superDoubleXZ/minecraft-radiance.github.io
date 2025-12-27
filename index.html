@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiance - Minecraft 极致光影</title>
+    <link rel="icon" href="resources/logo-radiance.png" type="image/png">
+    <meta name="description" content="Radiance - 次世代 Minecraft 路径追踪渲染引擎。基于 Vulkan C++ 底层重构，原生支持硬件光线追踪。">
+    <meta name="keywords" content="Minecraft, Shader, Ray Tracing, Vulkan, Rendering, Mod, Radiance">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://radiance.mc/">
+    <meta property="og:title" content="Radiance - Minecraft 极致光影">
+    <meta property="og:description" content="Radiance - 次世代 Minecraft 路径追踪渲染引擎。基于 Vulkan C++ 底层重构，原生支持硬件光线追踪。">
+    <meta property="og:image" content="resources/logo-radiance.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://radiance.mc/">
+    <meta property="twitter:title" content="Radiance - Minecraft 极致光影">
+    <meta property="twitter:description" content="Radiance - 次世代 Minecraft 路径追踪渲染引擎。基于 Vulkan C++ 底层重构，原生支持硬件光线追踪。">
+    <meta property="twitter:image" content="resources/logo-radiance.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- 引入像素字体 -->
+    <style>
+        @font-face {
+            font-family: 'Fusion Pixel';
+            src: url('fonts/fusion-pixel-font-10px-monospaced-ttf.woff2-v2025.12.11/fusion-pixel-10px-monospaced-latin.ttf.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+0020-007E, U+00A0-00FF, U+2000-206F, U+2070-209F, U+20A0-20CF, U+2100-214F, U+2150-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+2400-243F, U+2440-245F, U+2460-24FF, U+2500-257F, U+2580-259F, U+25A0-25FF, U+2600-26FF, U+2700-27BF, U+27C0-27EF, U+27F0-27FF, U+2800-28FF, U+2900-297F, U+2980-29FF, U+2A00-2AFF, U+2B00-2BFF, U+2C00-2C5F, U+2C60-2C7F, U+2C80-2CFF, U+2D00-2D2F, U+2D30-2D7F, U+2D80-2DFF, U+2E00-2E7F, U+2E80-2EFF, U+2F00-2FDF, U+2FF0-2FFF;
+        }
+        @font-face {
+            font-family: 'Fusion Pixel';
+            src: url('fonts/fusion-pixel-font-10px-monospaced-ttf.woff2-v2025.12.11/fusion-pixel-10px-monospaced-ja.ttf.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF00-FFEF, U+4E00-9FFF;
+        }
+        @font-face {
+            font-family: 'Fusion Pixel';
+            src: url('fonts/fusion-pixel-font-10px-monospaced-ttf.woff2-v2025.12.11/fusion-pixel-10px-monospaced-ko.ttf.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F;
+        }
+        @font-face {
+            font-family: 'Fusion Pixel';
+            src: url('fonts/fusion-pixel-font-10px-monospaced-ttf.woff2-v2025.12.11/fusion-pixel-10px-monospaced-zh_hans.ttf.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+20-7E, U+2000-206F, U+2500-25FF, U+2600-26FF, U+2700-27BF, U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+3100-312F, U+3130-318F, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+        }
+        @font-face {
+            font-family: 'Fusion Pixel';
+            src: url('fonts/fusion-pixel-font-10px-monospaced-ttf.woff2-v2025.12.11/fusion-pixel-10px-monospaced-zh_hant.ttf.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+20-7E, U+2000-206F, U+2500-25FF, U+2600-26FF, U+2700-27BF, U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+3100-312F, U+3130-318F, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2F800-2FA1F;
+        }
+        
+        body {
+            font-family: 'Fusion Pixel', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 2.0;
+            font-size: 14px;
+        }
+
+        .glass {
+            background: rgba(42, 42, 60, 0.2);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        .glass:hover {
+             border-color: rgba(251, 146, 60, 0.5);
+        }
+
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.5); /* Dim the video slightly */
+        }
+
+        .hero-text {
+            text-shadow: 4px 4px 0px #f97316, 0 0 20px rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff 0%, #fcd34d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #000;
+            transition: all 0.2s steps(5);
+            border: 2px solid #fff;
+            box-shadow: 4px 4px 0px rgba(255,255,255,0.3);
+            text-transform: uppercase;
+        }
+
+        .btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px rgba(255,255,255,0.5);
+            background-color: #fed7aa;
+        }
+        
+        .btn-glass {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.2s steps(5);
+        }
+        
+        .btn-glass:hover {
+             background: rgba(255,255,255,0.1);
+             border-color: #fff;
+        }
+
+        /* 页面切换动画 */
+        .page-view {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform : translateY(0); }
+        }
+
+        /* 简单的 Markdown 样式模拟 */
+        .markdown h3 { color: #fbbf24; margin-top: 2.5rem; margin-bottom: 1.25rem; font-size: 1.5rem; font-weight: bold; }
+        .markdown p { margin-bottom: 1.5rem; color: #d1d5db; font-size: 1.125rem; line-height: 1.8; }
+        .markdown ul { list-style-type: square; margin-left: 1.5rem; color: #9ca3af; margin-bottom: 1.5rem; font-size: 1.125rem; }
+        .markdown code { background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 4px; font-family: monospace; color: #fbbf24; font-size: 1rem; }
+        .markdown a { color: #fbbf24; text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+    <!-- 视频背景 -->
+    <video autoplay loop muted playsinline id="video-background">
+        <source src="resources/campfire.mp4" type="video/mp4">
+        Your web browser does not support / 您的浏览器不支持 HTML5 视频。
+    </video>
+
+    <!-- 导航栏 -->
+    <nav class="fixed w-full z-50 px-6 py-4 flex justify-between items-center transition-all duration-300 border-b border-transparent bg-[#0a0a0a]/80 backdrop-blur-md" id="navbar">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.hash='home'">
+            <div class="w-10 h-10 rounded-none flex items-center justify-center border-2 border-white/50 shadow-[2px_2px_0px_rgba(255,255,255,0.3)] bg-black">
+                <img src="resources/logo-radiance.png" alt="Radiance Logo" class="w-full h-full object-cover js-logo-img">
+            </div>
+            <span class="text-white text-base md:text-lg tracking-widest hidden sm:inline">RADIANCE</span>
+        </div>
+        
+        <!-- 导航链接：注意 href 变成了 hash 地址 -->
+        <div class="hidden md:flex space-x-8 text-base text-gray-300">
+            <a href="#home" class="hover:text-orange-400 transition-colors nav-link active" data-page="home" data-i18n="nav.home"></a>
+            <a href="#features" class="hover:text-orange-400 transition-colors nav-link" data-page="features" data-i18n="nav.features"></a>
+            <a href="#docs" class="hover:text-orange-400 transition-colors nav-link" data-page="docs" data-i18n="nav.docs"></a>
+            <a href="#changelog" class="hover:text-orange-400 transition-colors nav-link" data-page="changelog" data-i18n="nav.changelog"></a>
+            <a href="#download" class="hover:text-orange-400 transition-colors nav-link" data-page="download" data-i18n="nav.download"></a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+             <button id="lang-toggle" class="text-sm px-3 py-2 border border-white/30 hover:bg-white/10 transition-all uppercase">
+                EN
+            </button>
+            <!-- 移动端菜单按钮 (简化版) -->
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-black/95 flex flex-col items-center justify-center space-y-8 transition-transform duration-300 translate-x-full md:hidden">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <a href="#home" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.home"></a>
+        <a href="#features" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.features"></a>
+        <a href="#docs" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.docs"></a>
+        <a href="#changelog" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.changelog"></a>
+        <a href="#download" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.download"></a>
+    </div>
+
+    <!-- 页面容器 -->
+    <main id="app-container" class="pt-20 min-h-screen">
+        
+        <!-- ==================== 首页视图 (Home) ==================== -->
+        <div id="view-home" class="page-view active">
+            <!-- 英雄区 -->
+<section class="relative min-h-[80vh] flex flex-col justify-center items-center px-6">
+                <div class="text-center max-w-5xl z-10">
+                    <div class="text-orange-500 text-sm md:text-xl mb-8 animate-pulse tracking-[0.3em] font-bold" data-i18n="hero.subtitle"></div>
+                    <h1 class="text-5xl md:text-8xl mb-10 hero-text gradient-text leading-tight" data-i18n="hero.title"></h1>
+                    <p class="text-lg md:text-xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed" data-i18n="hero.desc"></p>
+                    <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 justify-center">
+                        <a href="#download" class="btn-primary px-8 py-5 text-sm sm:text-base flex items-center justify-center font-bold tracking-wide">
+                            <i data-lucide="zap" class="mr-3 w-5 h-5"></i> <span data-i18n="hero.btn_download"></span>
+                        </a>
+                        <a href="#docs" class="btn-glass px-8 py-5 text-sm sm:text-base flex items-center justify-center font-bold tracking-wide" data-i18n="hero.btn_docs">
+                            </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 特性展示 -->
+            <section class="py-12 px-6 max-w-7xl mx-auto relative z-10 -mt-32">
+                <div class="text-center mb-20">
+                    <h2 class="text-2xl md:text-3xl mb-6 text-white" data-i18n="features.title"></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="glass p-8 hover:translate-y-[-4px] transition-all">
+                        <i data-lucide="triangle" class="w-12 h-12 mb-6 text-orange-500"></i>
+                        <h3 class="text-xl mb-6 text-orange-400 font-bold" data-i18n="features.card1.title"></h3>
+                        <p class="text-gray-200 text-base leading-relaxed" data-i18n="features.card1.desc"></p>
+                    </div>
+                    <div class="glass p-8 hover:translate-y-[-4px] transition-all">
+                        <i data-lucide="sun" class="w-12 h-12 mb-6 text-yellow-400"></i>
+                        <h3 class="text-xl mb-6 text-yellow-300 font-bold" data-i18n="features.card2.title"></h3>
+                        <p class="text-gray-200 text-base leading-relaxed" data-i18n="features.card2.desc"></p>
+                    </div>
+                    <div class="glass p-8 hover:translate-y-[-4px] transition-all">
+                        <i data-lucide="trending-up" class="w-12 h-12 mb-6 text-amber-400"></i>
+                        <h3 class="text-xl mb-6 text-amber-300 font-bold" data-i18n="features.card3.title"></h3>
+                        <p class="text-gray-200 text-base leading-relaxed" data-i18n="features.card3.desc"></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 特性详情视图 (Features) ==================== -->
+        <div id="view-features" class="page-view max-w-7xl mx-auto px-6 py-12">
+<div class="text-center mb-16">
+                <img src="resources/logo-radiance.png" alt="Radiance Logo" class="w-24 h-24 mx-auto mb-6 drop-shadow-[0_0_10px_rgba(255,165,0,0.3)] js-logo-img">
+                <h1 class="text-4xl md:text-7xl text-white mb-6" data-i18n="features_page.title"></h1>
+                <p class="text-gray-400 max-w-2xl mx-auto" data-i18n="features_page.subtitle"></p>
+            </div>
+
+            <!-- Feature Block 1: Ray Tracing -->
+            <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
+                <div class="w-full md:w-1/2 glass p-1 min-h-[300px] flex items-center justify-center bg-black/50">
+                    <!-- Placeholder for Feature Image -->
+                    <div class="text-center p-10">
+                        <i data-lucide="sun" class="w-16 h-16 text-orange-500 mx-auto mb-4"></i>
+                        <span class="text-gray-500 text-xs">RTX VISUALIZATION</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 glass p-8 rounded-xl bg-black/40">
+                    <h2 class="text-3xl text-orange-400 mb-6 font-bold" data-i18n="features_page.rt.title"></h2>
+                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.rt.desc"></p>
+                    <ul class="space-y-4 text-base text-gray-300">
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.rt.point1"></span></li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.rt.point2"></span></li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.rt.point3"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature Block 1.5: Interaction -->
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-20">
+                <div class="w-full md:w-1/2 glass p-1 min-h-[300px] flex items-center justify-center bg-black/50">
+                    <div class="text-center p-10">
+                        <i data-lucide="hand" class="w-16 h-16 text-blue-500 mx-auto mb-4"></i>
+                        <span class="text-gray-500 text-xs">DYNAMIC INTERACTION</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 glass p-8 rounded-xl bg-black/40">
+                    <h2 class="text-3xl text-blue-400 mb-6 font-bold" data-i18n="features_page.interact.title"></h2>
+                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.interact.desc"></p>
+                    <ul class="space-y-4 text-base text-gray-300">
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.interact.point1"></span></li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.interact.point2"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature Block 2: Upscaling -->
+            <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
+                <div class="w-full md:w-1/2 glass p-1 min-h-[300px] flex items-center justify-center bg-black/50">
+                    <div class="text-center p-10">
+                        <i data-lucide="zap" class="w-16 h-16 text-yellow-500 mx-auto mb-4"></i>
+                        <span class="text-gray-500 text-xs">DLSS / FSR</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 glass p-8 rounded-xl bg-black/40">
+                    <h2 class="text-3xl text-yellow-400 mb-6 font-bold flex items-center">
+                        <span data-i18n="features_page.upscale.title"></span>
+                        <span class="ml-4 text-xs px-2 py-1 border border-yellow-500/50 text-yellow-500 bg-yellow-500/10 uppercase" data-i18n="features_page.upscale.status"></span>
+                    </h2>
+                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.upscale.desc"></p>
+                    <ul class="space-y-4 text-base text-gray-300">
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.upscale.point1"></span></li>
+                        <li class="flex items-center"><i data-lucide="clock" class="w-5 h-5 mr-3 text-yellow-500"></i> <span data-i18n="features_page.upscale.point2"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+             <!-- Feature Block 3: Materials -->
+             <div class="flex flex-col items-center text-center max-w-5xl mx-auto py-12">
+                <div class="w-full glass p-10 rounded-xl bg-black/40">
+                    <h2 class="text-3xl text-amber-400 mb-6 font-bold" data-i18n="features_page.pbr.title"></h2>
+                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.pbr.desc"></p>
+                    <ul class="flex flex-col md:flex-row justify-center gap-10 text-base text-gray-300">
+                        <li class="flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.pbr.point1"></span></li>
+                        <li class="flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.pbr.point2"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+<!-- ==================== 文档视图 (Docs) ==================== -->
+        <div id="view-docs" class="page-view max-w-4xl mx-auto px-6 py-12">
+            <div class="glass p-10 markdown">
+                <h1 class="text-3xl md:text-5xl text-white mb-8 border-b border-white/10 pb-4" data-i18n="docs.install.main_title"></h1>
+                
+                <h3 data-i18n="docs.install.req_title"></h3>
+                <p data-i18n="docs.install.req_list" />
+
+                <h3 data-i18n="docs.install.install_title"></h3>
+                <p data-i18n="docs.install.install_step" />
+            </div>
+        </div>
+
+        <!-- ==================== 更新日志视图 (Changelog) ==================== -->
+        <div id="view-changelog" class="page-view max-w-4xl mx-auto px-6 py-12">
+            <h1 class="text-2xl md:text-3xl text-white mb-10 text-center" data-i18n="changelog.main_title"></h1>
+            
+            <div class="space-y-8">
+                <!-- v0.1.0 -->
+                <div class="glass p-8 relative border-l-4 border-orange-500">
+                    <div class="absolute top-4 right-4 bg-orange-900/50 text-yellow-400 px-3 py-1 text-[12px] border border-orange-500" data-i18n="changelog.v0_1_0.badge"></div>
+                    <h2 class="text-xl text-white mb-2" data-i18n="changelog.v0_1_0.title"></h2>
+                    <div class="text-gray-500 text-[12px] mb-6" data-i18n="changelog.v0_1_0.date"></div>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-300">
+                        <li data-i18n="changelog.v0_1_0.item1"></li>
+                        <li data-i18n="changelog.v0_1_0.item2"></li>
+                        <li data-i18n="changelog.v0_1_0.item3"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 下载视图 (Download) ==================== -->
+        <div id="view-download" class="page-view max-w-3xl mx-auto px-6 py-12 text-center">
+            <div class="glass p-12">
+                <i data-lucide="download-cloud" class="w-16 h-16 mx-auto text-orange-400 mb-6"></i>
+                <h2 class="text-2xl text-white mb-8" data-i18n="download.title"></h2>
+                
+                <div class="grid grid-cols-1 gap-6 max-w-sm mx-auto">
+                    <button class="btn-primary py-6 flex flex-col items-center justify-center group">
+                        <span class="text-base mb-2" data-i18n="download.preview.title"></span>
+                        <span class="text-[12px] text-gray-500 group-hover:text-black" data-i18n="download.preview.meta"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-12 border-t-4 border-white/10 px-6 bg-black/80 relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-500 text-base">
+            <p class="mb-4 md:mb-0" data-i18n="footer.copyright"></p>
+            <div class="flex space-x-8">
+                <a href="#docs" class="hover:text-orange-400">Wiki</a>
+                <a href="https://github.com/Minecraft-Radiance" target="_blank" class="hover:text-orange-400">GitHub</a>
+                <a href="https://discord.gg/y4Uzf6acqk" target="_blank" class="hover:text-orange-400">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ----------------- 站点配置 (Site Configuration) -----------------
+        const SITE_CONFIG = {
+            logoPath: 'resources/logo-radiance.png'
+        };
+
+        // Apply config to logo images
+        document.querySelectorAll('.js-logo-img').forEach(img => {
+            img.src = SITE_CONFIG.logoPath;
+        });
+
+        lucide.createIcons();
+
+        // ----------------- 移动端菜单逻辑 -----------------
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+            // Prevent scrolling when menu is open
+            if (!mobileMenu.classList.contains('translate-x-full')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileMenuClose.addEventListener('click', toggleMobileMenu);
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
+        });
+
+        // ----------------- 路由系统 (SPA Router) ----------------- 
+        function router() {
+            // 获取当前的 hash，默认为 'home'
+            let hash = window.location.hash.substring(1) || 'home';
+            
+            // 获取所有视图
+            const views = document.querySelectorAll('.page-view');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // 隐藏所有视图
+            let viewFound = false;
+            views.forEach(view => {
+                if (view.id === `view-${hash}`) {
+                    view.classList.add('active');
+                    viewFound = true;
+                } else {
+                    view.classList.remove('active');
+                }
+            });
+
+            // 如果没有找到对应视图（比如乱输url），回到首页
+            if (!viewFound) {
+                document.getElementById('view-home').classList.add('active');
+                hash = 'home';
+            }
+
+            // 更新导航栏状态
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${hash}`) {
+                    link.classList.add('text-orange-400');
+                    link.classList.remove('text-gray-300');
+                } else {
+                    link.classList.remove('text-orange-400');
+                    link.classList.add('text-gray-300');
+                }
+            });
+            
+            // 滚动到顶部
+            window.scrollTo(0, 0);
+        }
+
+        // 监听 Hash 变化
+        window.addEventListener('hashchange', router);
+        // 初始化路由
+        window.addEventListener('load', () => {
+            router();
+            updateLanguage(currentLang);
+        });
+
+        // ----------------- 多语言系统 (更新版) ----------------- 
+        const translations = {
+            'zh': {
+                'nav.home': '首页',
+                'nav.features': '特性',
+                'nav.docs': '文档',
+                'nav.changelog': '更新日志',
+                'nav.download': '下载',
+                'hero.subtitle': 'VULKAN C++ POWERED RENDERING',
+                'hero.title': '次世代 Minecraft 路径追踪渲染引擎',
+                'hero.desc': '突破 OpenGL 性能瓶颈。Radiance 基于 Vulkan C++ 底层重构，原生支持 Windows 与 Linux 平台的硬件光线追踪。释放硬件极致潜能，重塑方块世界的每一束光。',
+                'hero.btn_download': '下载预览版',
+                'hero.btn_docs': '阅读安装文档',
+                'features.title': '底层技术革新',
+                'features.card1.title': 'Vulkan 核心接管',
+                'features.card1.desc': '彻底摒弃单线程 OpenGL。启用 GLFW_NO_API 模式，完全接管渲染窗口。利用 Vulkan 高并发优势，多核性能满血释放。',
+                'features.card2.title': '硬件级光线追踪',
+                'features.card2.desc': '基于 Vulkan Ray Tracing Pipeline (KHR)。直接调用 RT Core 硬件算力，性能远超软件模拟方案。',
+                'features.card3.title': '多平台极致性能',
+                'features.card3.desc': '完美支持 Windows 与 Linux。得益于 Vulkan 管线优化，性能显著优于传统着色器，让光追不再是幻灯片。',
+                'features_page.title': 'Radiance Mod 技术特性',
+                'features_page.subtitle': '底层原生代码重写，赋予 Minecraft 次世代渲染能力',
+                'features_page.rt.title': '全路径追踪渲染',
+                'features_page.rt.desc': '不同于传统的光栅化渲染，Radiance 采用全路径追踪（Path Tracing）技术。每一个像素都模拟光线的真实物理行为，经过多次弹射，计算出最精确的颜色。',
+                'features_page.rt.point1': '物理精确的软阴影与环境光遮蔽',
+                'features_page.rt.point2': '动态全局光照 (GI) - 实时计算多次光线反射，实现真实漫射与溢色',
+                'features_page.rt.point3': '全路径追踪 (Path Tracing) - 统一计算反射与阴影，无需堆叠光栅化 Trick',
+                'features_page.interact.title': '独家动态交互体验',
+                'features_page.interact.desc': '打破传统 Shader 的限制。Radiance 真正理解游戏物体：丢出的发光物品能照亮环境并投射阴影，玩家自身也能拥有完美的动态阴影。',
+                'features_page.interact.point1': '全动态实体阴影（玩家、生物、掉落物）',
+                'features_page.interact.point2': '动态光源阴影投射（手持光源、投掷物）',
+                'features_page.upscale.title': '深度学习超分辨率',
+                'features_page.upscale.status': 'DLSS 4 原生集成',
+                'features_page.upscale.desc': '在高分辨率下保持高帧率是光追的难题。Radiance 原生集成了 NVIDIA DLSS，并正在积极适配 AMD FSR，利用 AI 算法在保证画质的前提下，将帧率大幅提升。',
+                'features_page.upscale.point1': 'NVIDIA DLSS 4 光线重构已就绪',
+                'features_page.upscale.point2': 'AMD FSR 3 支持正在开发中',
+                'features_page.pbr.title': '基于物理的材质系统 (开发中)',
+                'features_page.pbr.desc': '正在构建支持 LabPBR 标准的次世代材质管线。旨在通过 Cook-Torrance BRDF 模型，赋予方块真实的物理质感。',
+                'features_page.pbr.point1': '[TODO] 基于微表面理论的 GGX 镜面反射',
+                'features_page.pbr.point2': '[TODO] 原生支持法线贴图与位移表现',
+                'download.title': '下载预览版',
+                'download.preview.title': '预览版',
+                'download.preview.meta': '支持 Windows & Linux | 需兼容 Vulkan RT 的 Nvidia GPU',
+                'docs.install.main_title': '安装指南',
+                'docs.install.req_title': '系统需求',
+                'docs.install.req_list': '有 VK_KHR_ray_tracing_pipeline 的 Nvidia GPU （RTX 20系+ 一般都有，具体可以查询<a href="https://vulkan.gpuinfo.org/">这里</a>）',
+                'docs.install.install_title': '安装步骤',
+                'docs.install.install_step': '将Mod文件放入mods文件夹' + 
+                    '<div class="bg-yellow-900/30 border border-yellow-500/50 p-4 mt-8 rounded text-sm text-yellow-200">' + 
+                    '<span class="font-bold">注意：</span> Windows 需要将 \{JDK路径\}/bin/msvcp140.dll, vcruntime140_1.dll, vcruntime140.dll 删除，并安装最新的<a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170">Microsoft Visual C++ Redistributable</a>。' +
+                    '</div>',
+                'changelog.v0_1_0.badge': '初始发布',
+                'changelog.v0_1_0.title': 'v0.1.0 - 黎明初现',
+                'changelog.v0_1_0.date': '2025-02-15',
+                'changelog.v0_1_0.item1': '[发布] 首个公开预览版，开启次世代光影体验',
+                'changelog.v0_1_0.item2': '[核心] 完整的 Vulkan 渲染后端实现',
+                'changelog.v0_1_0.item3': '[特性] 基础硬件光线追踪管线与路径追踪支持,加入DLSS 4支持',
+                'changelog.main_title': 'Radiance版本历史',
+                'footer.copyright': 'Radiance. 非官方 Minecraft Mod 项目.'
+            },
+            'en': {
+                'nav.home': 'Home',
+                'nav.features': 'Features',
+                'nav.docs': 'Wiki',
+                'nav.changelog': 'Changelog',
+                'nav.download': 'Download',
+                'hero.subtitle': 'VULKAN C++ POWERED RENDERING',
+                'hero.title': 'Next-Gen Minecraft Path Tracing Engine',
+                'hero.desc': 'Break free from OpenGL limits. Radiance is rebuilt on a Vulkan C++ backend, featuring native Hardware Ray Tracing on Windows & Linux. Unleash your GPU\'s full potential.',
+                'hero.btn_download': 'Download Preview Version',
+                'hero.btn_docs': 'Read Installation Docs',
+                'features.title': 'Core Innovations',
+                'features.card1.title': 'Vulkan Core Overhaul',
+                'features.card1.desc': 'Complete OpenGL Bypass. Replaces the OpenGL pipeline with a highly concurrent Vulkan backend to unlock true multi-core performance.',
+                'features.card2.title': 'Hardware Ray Tracing',
+                'features.card2.desc': 'Powered by Vulkan Ray Tracing Pipeline (KHR). Directly harnesses RT Core hardware acceleration, vastly outperforming software emulation.',
+                'features.card3.title': 'Cross-Platform Performance',
+                'features.card3.desc': 'Full support for Windows & Linux. The Vulkan pipeline delivers vastly superior performance over legacy shaders, making ray tracing playable, not a slideshow.',
+                'features_page.title': 'Radiance Mod Technical Features',
+                'features_page.subtitle': 'Rebuilt from the ground up to empower Minecraft with next-gen rendering.',
+                'features_page.rt.title': 'Full Path Tracing',
+                'features_page.rt.desc': 'Unlike traditional rasterization, Radiance uses full Path Tracing technology. Every pixel simulates the true physical behavior of light, bouncing multiple times to calculate the most accurate color.',
+                'features_page.rt.point1': 'Physically accurate soft shadows & AO',
+                'features_page.rt.point2': 'Real-time Dynamic GI - Simulates multiple light bounces for true diffusion & bleeding',
+                'features_page.rt.point3': 'Full Path Tracing - Unifies reflections & shadows, eliminating rasterization tricks',
+                'features_page.interact.title': 'Exclusive Dynamic Interaction',
+                'features_page.interact.desc': 'Breaking shader limitations. Radiance understands game objects: thrown light sources illuminate the world and cast shadows, and the player model casts perfect dynamic shadows.',
+                'features_page.interact.point1': 'Full Dynamic Entity Shadows (Player, Mobs, Items)',
+                'features_page.interact.point2': 'Dynamic Light Source Shadow Casting (Handheld & Thrown)',
+                'features_page.upscale.title': 'Deep Learning Upscaling',
+                'features_page.upscale.status': 'DLSS 4 NATIVE',
+                'features_page.upscale.desc': 'Maintaining high framerates at high resolutions is a challenge. Radiance natively integrates NVIDIA DLSS and is actively working on AMD FSR support to boost performance without sacrificing quality.',
+                'features_page.upscale.point1': 'NVIDIA DLSS 4 Ray Reconstruction Ready',
+                'features_page.upscale.point2': 'AMD FSR 3.0 Support In Progress',
+                'features_page.pbr.title': 'Physically Based Materials (In Development)',
+                'features_page.pbr.desc': 'Building a next-gen material pipeline supporting LabPBR. Cook-Torrance BRDF models will bring true physical textures to blocks.',
+                'features_page.pbr.point1': '[ROADMAP] Micro-surface GGX Specular Reflection',
+                'features_page.pbr.point2': '[ROADMAP] Native Normal Map & Displacement support',
+                'download.title': 'Download Preview Build',
+                'download.preview.title': 'Preview Version',
+                'download.preview.meta': 'Supports Windows & Linux | Requires Vulkan RT compatible Nvidia GPU',
+                'docs.install.main_title': 'Installation Guide',
+                'docs.install.req_title': 'System Requirements',
+                'docs.install.req_list': 'Nvidia GPU with VK_KHR_ray_tracing_pipeline extension (RTX 20 series+, check details <a href="https://vulkan.gpuinfo.org/">here</a>)',
+                'docs.install.install_title': 'Installation Steps',
+                'docs.install.install_step': 'Place the mod file into your Minecraft mods folder.' + 
+                    '<div class="bg-yellow-900/30 border border-yellow-500/50 p-4 mt-8 rounded text-sm text-yellow-200">' + 
+                    '<span class="font-bold">NOTE:</span> For Windows users, you need to delete <code>msvcp140.dll</code>, <code>vcruntime140_1.dll</code>, and <code>vcruntime140.dll</code> from your <code>{JDK_PATH}/bin/</code> directory, then install the latest <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170">Microsoft Visual C++ Redistributable</a>.' +
+                    '</div>',
+                'changelog.v0_1_0.badge': 'INITIAL RELEASE',
+                'changelog.v0_1_0.title': 'v0.1.0 - The Dawn of Radiance',
+                'changelog.v0_1_0.date': '2025-02-15',
+                'changelog.v0_1_0.item1': '[Release] First public preview version',
+                'changelog.v0_1_0.item2': '[Core] Full Vulkan rendering backend implementation',
+                'changelog.v0_1_0.item3': '[Feature] Basic hardware ray tracing and path tracing support',
+                'changelog.main_title': 'Radiance Version History',
+                'footer.copyright': 'Radiance. Unofficial Minecraft Mod Project.'
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+            document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : 'ZH';
+        }
+
+        document.getElementById('lang-toggle').addEventListener('click', () => {
+            updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
+        });
+
+        // ----------------- Shader 背景逻辑 (已移除) ----------------- 
+        // Original shader-related JavaScript code was removed as per user request.
+        // The background is now handled by a video element.
+
+    </script>
+</body>
+</html>
