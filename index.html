@@ -92,12 +92,14 @@
         }
 
         .hero-text {
-            text-shadow: 4px 4px 0px #f97316, 0 0 20px rgba(255, 255, 255, 0.5);
+            text-shadow: 
+                0 0 12px rgba(255, 255, 255, 0.4), 
+                0 0 25px rgba(251, 146, 60, 0.3);
             line-height: 1.5;
         }
 
         .gradient-text {
-            background: linear-gradient(to right, #ffffff 0%, #fcd34d 100%);
+            background: linear-gradient(180deg, #ffffff 40%, #ffedd5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -149,12 +151,66 @@
         .markdown code { background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 4px; font-family: monospace; color: #fbbf24; font-size: 1rem; }
         .markdown a { color: #fbbf24; text-decoration: underline; }
 
+        /* 灯箱 (Lightbox) 样式 */
+        .zoom-container {
+            cursor: zoom-in;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .zoom-container::after {
+            content: 'Click to Zoom';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 8px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            text-align: center;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .zoom-container:hover::after {
+            opacity: 1;
+        }
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            cursor: zoom-out;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        #lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: zoomIn 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
 
     <!-- 视频背景 -->
-    <video autoplay loop muted playsinline id="video-background">
+    <video autoplay loop muted playsinline id="video-background" class="transition-opacity duration-1000 opacity-30">
         <source src="resources/campfire.mp4" type="video/mp4">
         Your web browser does not support / 您的浏览器不支持 HTML5 视频。
     </video>
@@ -172,6 +228,7 @@
         <div class="hidden md:flex space-x-8 text-base text-gray-300">
             <a href="#home" class="hover:text-orange-400 transition-colors nav-link active" data-page="home" data-i18n="nav.home"></a>
             <a href="#features" class="hover:text-orange-400 transition-colors nav-link" data-page="features" data-i18n="nav.features"></a>
+            <a href="#gallery" class="hover:text-orange-400 transition-colors nav-link" data-page="gallery" data-i18n="nav.gallery"></a>
             <a href="#docs" class="hover:text-orange-400 transition-colors nav-link" data-page="docs" data-i18n="nav.docs"></a>
             <a href="#changelog" class="hover:text-orange-400 transition-colors nav-link" data-page="changelog" data-i18n="nav.changelog"></a>
             <a href="#download" class="hover:text-orange-400 transition-colors nav-link" data-page="download" data-i18n="nav.download"></a>
@@ -195,6 +252,7 @@
         </button>
         <a href="#home" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.home"></a>
         <a href="#features" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.features"></a>
+        <a href="#gallery" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.gallery"></a>
         <a href="#docs" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.docs"></a>
         <a href="#changelog" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.changelog"></a>
         <a href="#download" class="text-2xl text-gray-300 hover:text-orange-400 mobile-nav-link" data-i18n="nav.download"></a>
@@ -215,8 +273,8 @@
                         <a href="#download" class="btn-primary px-8 py-5 text-sm sm:text-base flex items-center justify-center font-bold tracking-wide">
                             <i data-lucide="zap" class="mr-3 w-5 h-5"></i> <span data-i18n="hero.btn_download"></span>
                         </a>
-                        <a href="#docs" class="btn-glass px-8 py-5 text-sm sm:text-base flex items-center justify-center font-bold tracking-wide" data-i18n="hero.btn_docs">
-                            </a>
+                        <a href="#gallery" class="btn-glass px-8 py-5 text-sm sm:text-base flex items-center justify-center font-bold tracking-wide" data-i18n="hero.btn_gallery">
+                        </a>
                     </div>
                 </div>
             </section>
@@ -246,20 +304,86 @@
             </section>
         </div>
 
+        <!-- ==================== 光影展示视图 (Gallery) ==================== -->
+        <div id="view-gallery" class="page-view max-w-7xl mx-auto px-6 py-12">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl md:text-7xl text-white mb-6" data-i18n="gallery.title"></h1>
+                <p class="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto" data-i18n="gallery.subtitle"></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 视频卡片 1 -->
+                <div class="glass p-0 overflow-hidden group relative zoom-video-container cursor-pointer">
+                    <!-- 播放按钮遮罩 -->
+                    <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-black/20 backdrop-blur-sm group-hover:scale-110 group-hover:border-orange-500 transition-all shadow-xl">
+                            <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover" poster="resources/cover_trailor.png">
+                        <source src="https://image.puxuan.cc/PicGo/english_default_60.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
+                        <h3 class="text-orange-400 font-bold text-lg" data-i18n="gallery.video1.title">Radiance Official Trailer</h3>
+                        <p class="text-gray-300 text-sm" data-i18n="gallery.video1.desc">Immerse yourself in next-gen visuals.</p>
+                    </div>
+                </div>
+
+                <!-- 视频卡片 2 -->
+                <div class="glass p-0 overflow-hidden group relative zoom-video-container cursor-pointer">
+                    <!-- 播放按钮遮罩 -->
+                    <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-black/20 backdrop-blur-sm group-hover:scale-110 group-hover:border-yellow-500 transition-all shadow-xl">
+                            <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover" poster="resources/room-walkthrough.png">
+                        <source src="https://image.puxuan.cc/PicGo/room-walkthrough.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
+                        <h3 class="text-yellow-400 font-bold text-lg" data-i18n="gallery.video2.title">Path Tracing Showcase</h3>
+                        <p class="text-gray-300 text-sm" data-i18n="gallery.video2.desc">Complex light bounces and physical materials.</p>
+                    </div>
+                </div>
+
+                <!-- 视频卡片 3 -->
+                <div class="glass p-0 overflow-hidden group relative zoom-video-container cursor-pointer">
+                    <!-- 播放按钮遮罩 -->
+                    <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-black/20 backdrop-blur-sm group-hover:scale-110 group-hover:border-red-500 transition-all shadow-xl">
+                            <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover">
+                        <source src="https://image.puxuan.cc/PicGo/attack.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
+                        <h3 class="text-red-400 font-bold text-lg" data-i18n="gallery.video3.title">Combat Interaction</h3>
+                        <p class="text-gray-300 text-sm" data-i18n="gallery.video3.desc">Dynamic lighting effects during combat.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                 <p class="text-gray-500 italic">More videos coming soon...</p>
+            </div>
+        </div>
+
         <!-- ==================== 特性详情视图 (Features) ==================== -->
         <div id="view-features" class="page-view max-w-7xl mx-auto px-6 py-12">
 <div class="text-center mb-16">
-                <img src="resources/logo-radiance.png" alt="Radiance Logo" class="w-24 h-24 mx-auto mb-6 drop-shadow-[0_0_10px_rgba(255,165,0,0.3)] js-logo-img">
                 <h1 class="text-4xl md:text-7xl text-white mb-6" data-i18n="features_page.title"></h1>
-                <p class="text-gray-400 max-w-2xl mx-auto" data-i18n="features_page.subtitle"></p>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed" data-i18n="features_page.subtitle"></p>
             </div>
 
             <!-- Feature Block 1: Ray Tracing -->
             <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
-                <div class="w-full md:w-1/2 glass p-1 min-h-[300px] flex items-center justify-center bg-black/50">
-                    <!-- Placeholder for Feature Image -->
-                    <div class="text-center p-10">
-                        <i data-lucide="sun" class="w-16 h-16 text-orange-500 mx-auto mb-4"></i>
+                <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
+                    <img id="img-feature-rt" src="" alt="Ray Tracing" class="w-full h-full object-cover min-h-[300px]" 
+                         onerror="this.src='https://placehold.co/800x600/1a1a1a/orange?text=RTX+Preview'; this.onerror=null;">
+                    <div class="text-center p-10 hidden w-full h-full flex flex-col justify-center items-center absolute inset-0">
+                         <!-- Fallback Icon if image missing -->
+                        <i data-lucide="sun" class="w-16 h-16 text-orange-500 mb-4"></i>
                         <span class="text-gray-500 text-xs">RTX VISUALIZATION</span>
                     </div>
                 </div>
@@ -276,9 +400,11 @@
 
             <!-- Feature Block 1.5: Interaction -->
             <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-20">
-                <div class="w-full md:w-1/2 glass p-1 min-h-[300px] flex items-center justify-center bg-black/50">
-                    <div class="text-center p-10">
-                        <i data-lucide="hand" class="w-16 h-16 text-blue-500 mx-auto mb-4"></i>
+                <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
+                    <img id="img-feature-interact" src="" alt="Dynamic Interaction" class="w-full h-full object-cover min-h-[300px]" 
+                         onerror="this.src='https://placehold.co/800x600/1a1a1a/3b82f6?text=Interaction'; this.onerror=null;">
+                    <div class="text-center p-10 hidden w-full h-full flex flex-col justify-center items-center absolute inset-0">
+                        <i data-lucide="hand" class="w-16 h-16 text-blue-500 mb-4"></i>
                         <span class="text-gray-500 text-xs">DYNAMIC INTERACTION</span>
                     </div>
                 </div>
@@ -294,9 +420,11 @@
 
             <!-- Feature Block 2: Upscaling -->
             <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
-                <div class="w-full md:w-1/2 glass p-1 min-h-[300px] flex items-center justify-center bg-black/50">
-                    <div class="text-center p-10">
-                        <i data-lucide="zap" class="w-16 h-16 text-yellow-500 mx-auto mb-4"></i>
+                <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
+                    <img id="img-feature-upscale" src="" alt="Deep Learning Upscaling" class="w-full h-full object-cover min-h-[300px]" 
+                         onerror="this.src='https://placehold.co/800x600/1a1a1a/eab308?text=DLSS+Upscaling'; this.onerror=null;">
+                     <div class="text-center p-10 hidden w-full h-full flex flex-col justify-center items-center absolute inset-0">
+                        <i data-lucide="zap" class="w-16 h-16 text-yellow-500 mb-4"></i>
                         <span class="text-gray-500 text-xs">DLSS / FSR</span>
                     </div>
                 </div>
@@ -309,18 +437,6 @@
                     <ul class="space-y-4 text-base text-gray-300">
                         <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.upscale.point1"></span></li>
                         <li class="flex items-center"><i data-lucide="clock" class="w-5 h-5 mr-3 text-yellow-500"></i> <span data-i18n="features_page.upscale.point2"></span></li>
-                    </ul>
-                </div>
-            </div>
-
-             <!-- Feature Block 3: Materials -->
-             <div class="flex flex-col items-center text-center max-w-5xl mx-auto py-12">
-                <div class="w-full glass p-10 rounded-xl bg-black/40">
-                    <h2 class="text-3xl text-amber-400 mb-6 font-bold" data-i18n="features_page.pbr.title"></h2>
-                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.pbr.desc"></p>
-                    <ul class="flex flex-col md:flex-row justify-center gap-10 text-base text-gray-300">
-                        <li class="flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.pbr.point1"></span></li>
-                        <li class="flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.pbr.point2"></span></li>
                     </ul>
                 </div>
             </div>
@@ -363,24 +479,47 @@
                 <i data-lucide="download-cloud" class="w-16 h-16 mx-auto text-orange-400 mb-6"></i>
                 <h2 class="text-2xl text-white mb-8" data-i18n="download.title"></h2>
                 
-                <div class="grid grid-cols-1 gap-6 max-w-sm mx-auto">
-                    <button class="btn-primary py-6 flex flex-col items-center justify-center group">
-                        <span class="text-base mb-2" data-i18n="download.preview.title"></span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <a href="https://modrinth.com/project/radiance-mod" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group">
+                        <span class="text-base mb-2" data-i18n="download.modrinth.title"></span>
                         <span class="text-[12px] text-gray-500 group-hover:text-black" data-i18n="download.preview.meta"></span>
-                    </button>
+                    </a>
+                    <a href="https://legacy.curseforge.com/minecraft/mc-mods/radiance" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group">
+                        <span class="text-base mb-2" data-i18n="download.curseforge.title"></span>
+                        <span class="text-[12px] text-gray-500 group-hover:text-black" data-i18n="download.preview.meta"></span>
+                    </a>
+                    <a href="#docs" class="sm:col-span-2 btn-glass py-4 flex items-center justify-center font-bold tracking-wide uppercase hover:bg-white/10 transition-colors" data-i18n="download.btn_docs">
+                    </a>
                 </div>
             </div>
         </div>
 
     </main>
 
+    <!-- 灯箱容器 -->
+    <div id="lightbox" class="hidden fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md justify-center items-center p-8 transition-opacity duration-300 opacity-0" onclick="closeLightbox(event)">
+        <!-- 图片容器 -->
+        <img id="lightbox-img" src="" alt="Enlarged View" class="hidden max-w-full max-h-full object-contain shadow-2xl border border-white/10">
+        <!-- 视频容器 -->
+        <video id="lightbox-video" controls controlsList="nodownload" oncontextmenu="return false;" class="hidden max-w-full max-h-full shadow-2xl border border-white/10 focus:outline-none">
+            Your browser does not support the video tag.
+        </video>
+        <!-- 关闭按钮提示 -->
+        <button class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+    </div>
+
     <!-- 页脚 -->
     <footer class="py-12 border-t-4 border-white/10 px-6 bg-black/80 relative z-10">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-500 text-base">
-            <p class="mb-4 md:mb-0" data-i18n="footer.copyright"></p>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-500 text-lg">
+            <div class="flex flex-col mb-4 md:mb-0">
+                <p data-i18n="footer.copyright"></p>
+                <p class="text-sm mt-2 opacity-50" data-i18n="footer.credits"></p>
+            </div>
             <div class="flex space-x-8">
                 <a href="#docs" class="hover:text-orange-400">Wiki</a>
-                <a href="https://github.com/Minecraft-Radiance" target="_blank" class="hover:text-orange-400">GitHub</a>
+                <a href="https://github.com/Minecraft-Radiance/Radiance" target="_blank" class="hover:text-orange-400">GitHub</a>
                 <a href="https://discord.gg/y4Uzf6acqk" target="_blank" class="hover:text-orange-400">Discord</a>
             </div>
         </div>
@@ -389,13 +528,32 @@
     <script>
         // ----------------- 站点配置 (Site Configuration) -----------------
         const SITE_CONFIG = {
-            logoPath: 'resources/logo-radiance.png'
+            logoPath: 'resources/logo-radiance.png',
+            featureImages: {
+                rt: 'https://image.puxuan.cc/PicGo/woods.png',       // Ray Tracing 图片 (支持图床链接)
+                interact: 'https://image.puxuan.cc/PicGo/gloom.png', // Interaction 图片
+                upscale: 'https://image.puxuan.cc/PicGo/underground.png'    // Upscaling 图片
+            }
         };
 
         // Apply config to logo images
         document.querySelectorAll('.js-logo-img').forEach(img => {
             img.src = SITE_CONFIG.logoPath;
         });
+
+        // Apply config to feature images
+        const featureImgMap = {
+            'img-feature-rt': SITE_CONFIG.featureImages.rt,
+            'img-feature-interact': SITE_CONFIG.featureImages.interact,
+            'img-feature-upscale': SITE_CONFIG.featureImages.upscale
+        };
+
+        for (const [id, url] of Object.entries(featureImgMap)) {
+            const imgEl = document.getElementById(id);
+            if (imgEl && url) {
+                imgEl.src = url;
+            }
+        }
 
         lucide.createIcons();
 
@@ -476,8 +634,11 @@
         // ----------------- 多语言系统 (更新版) ----------------- 
         const translations = {
             'zh': {
+                'site.title': 'Radiance - Minecraft 极致光影',
+                'site.desc': 'Radiance - 次世代 Minecraft 路径追踪渲染引擎。基于 Vulkan C++ 底层重构，原生支持硬件光线追踪。',
                 'nav.home': '首页',
                 'nav.features': '特性',
+                'nav.gallery': '展示',
                 'nav.docs': '文档',
                 'nav.changelog': '更新日志',
                 'nav.download': '下载',
@@ -485,14 +646,23 @@
                 'hero.title': '次世代 Minecraft 路径追踪渲染引擎',
                 'hero.desc': '突破 OpenGL 性能瓶颈。Radiance 基于 Vulkan C++ 底层重构，原生支持 Windows 与 Linux 平台的硬件光线追踪。释放硬件极致潜能，重塑方块世界的每一束光。',
                 'hero.btn_download': '下载预览版',
+                'hero.btn_gallery': '查看光影展示',
                 'hero.btn_docs': '阅读安装文档',
                 'features.title': '底层技术革新',
-                'features.card1.title': 'Vulkan 核心接管',
-                'features.card1.desc': '彻底摒弃单线程 OpenGL。启用 GLFW_NO_API 模式，完全接管渲染窗口。利用 Vulkan 高并发优势，多核性能满血释放。',
+                'features.card1.title': '<a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> 核心接管',
+                'features.card1.desc': '彻底摒弃OpenGL。启用 GLFW_NO_API 模式，完全接管渲染窗口。利用 <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> 高并发优势，多核性能满血释放。',
                 'features.card2.title': '硬件级光线追踪',
-                'features.card2.desc': '基于 Vulkan Ray Tracing Pipeline (KHR)。直接调用 RT Core 硬件算力，性能远超软件模拟方案。',
+                'features.card2.desc': '基于 <a href="https://docs.vulkan.org/refpages/latest/refpages/source/VK_KHR_ray_tracing_pipeline.html" target="_blank" class="underline hover:text-orange-400">Vulkan Ray Tracing Pipeline</a> (KHR)。直接调用 RT Core 硬件算力，性能远超软件模拟方案。',
                 'features.card3.title': '多平台极致性能',
-                'features.card3.desc': '完美支持 Windows 与 Linux。得益于 Vulkan 管线优化，性能显著优于传统着色器，让光追不再是幻灯片。',
+                'features.card3.desc': '完美支持 Windows 与 Linux。得益于 <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> 管线优化，性能显著优于传统着色器，让光追不再是幻灯片。',
+                'gallery.title': '光影展示',
+                'gallery.subtitle': '实时运行录制，感受次世代渲染引擎的魅力',
+                'gallery.video1.title': 'Radiance 官方预告片',
+                'gallery.video1.desc': '沉浸式体验次世代光影。实机演示光线追踪、动态交互与极致性能的完美结合。',
+                'gallery.video2.title': '室内路径追踪展示',
+                'gallery.video2.desc': '展示发光物品、与复杂光路模拟的完美融合。',
+                'gallery.video3.title': '战斗交互光影',
+                'gallery.video3.desc': '史莱姆受击时的动态光源与动作无残影表现。',
                 'features_page.title': 'Radiance Mod 技术特性',
                 'features_page.subtitle': '底层原生代码重写，赋予 Minecraft 次世代渲染能力',
                 'features_page.rt.title': '全路径追踪渲染',
@@ -505,37 +675,43 @@
                 'features_page.interact.point1': '全动态实体阴影（玩家、生物、掉落物）',
                 'features_page.interact.point2': '动态光源阴影投射（手持光源、投掷物）',
                 'features_page.upscale.title': '深度学习超分辨率',
-                'features_page.upscale.status': 'DLSS 4 原生集成',
-                'features_page.upscale.desc': '在高分辨率下保持高帧率是光追的难题。Radiance 原生集成了 NVIDIA DLSS，并正在积极适配 AMD FSR，利用 AI 算法在保证画质的前提下，将帧率大幅提升。',
-                'features_page.upscale.point1': 'NVIDIA DLSS 4 光线重构已就绪',
+                'features_page.upscale.status': '<a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">DLSS 4</a> 原生集成',
+                'features_page.upscale.desc': '在高分辨率下保持高帧率是光追的难题。Radiance 原生集成了 <a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS</a>，并正在积极适配 AMD FSR，利用 AI 算法在保证画质的前提下，将帧率大幅提升。',
+                'features_page.upscale.point1': '<a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS 4</a> 光线重构已就绪',
                 'features_page.upscale.point2': 'AMD FSR 3 支持正在开发中',
-                'features_page.pbr.title': '基于物理的材质系统 (开发中)',
-                'features_page.pbr.desc': '正在构建支持 LabPBR 标准的次世代材质管线。旨在通过 Cook-Torrance BRDF 模型，赋予方块真实的物理质感。',
-                'features_page.pbr.point1': '[TODO] 基于微表面理论的 GGX 镜面反射',
-                'features_page.pbr.point2': '[TODO] 原生支持法线贴图与位移表现',
                 'download.title': '下载预览版',
-                'download.preview.title': '预览版',
-                'download.preview.meta': '支持 Windows & Linux | 需兼容 Vulkan RT 的 Nvidia GPU',
+                'download.modrinth.title': 'Modrinth 预览版',
+                'download.curseforge.title': 'CurseForge 预览版',
+                'download.preview.meta': '支持 Windows & Linux<br>需兼容 Vulkan RT 的 Nvidia GPU',
+                'download.btn_docs': '阅读安装文档',
                 'docs.install.main_title': '安装指南',
                 'docs.install.req_title': '系统需求',
                 'docs.install.req_list': '有 VK_KHR_ray_tracing_pipeline 的 Nvidia GPU （RTX 20系+ 一般都有，具体可以查询<a href="https://vulkan.gpuinfo.org/">这里</a>）',
                 'docs.install.install_title': '安装步骤',
-                'docs.install.install_step': '将Mod文件放入mods文件夹' + 
+                'docs.install.install_step': '<ol class="list-decimal list-inside space-y-4">' + 
+                    '<li>将 Mod 文件放入 <code>mods</code> 文件夹。</li>' +
+                    '<li>手动下载 <code>nvngx_dlss.dll</code> (版本 310.3.0 或以上) 并将其放入 <code>.minecraft/radiance</code> 目录下（如不存在请手动创建）。</li>' +
+                    '</ol>' +
                     '<div class="bg-yellow-900/30 border border-yellow-500/50 p-4 mt-8 rounded text-sm text-yellow-200">' + 
-                    '<span class="font-bold">注意：</span> Windows 需要将 \{JDK路径\}/bin/msvcp140.dll, vcruntime140_1.dll, vcruntime140.dll 删除，并安装最新的<a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170">Microsoft Visual C++ Redistributable</a>。' +
-                    '</div>',
+                    '<span class="font-bold">注意：</span> Windows 用户需要将 <code>{JDK路径}/bin/</code> 目录下的 <code>msvcp140.dll</code>, <code>vcruntime140_1.dll</code>, 以及 <code>vcruntime140.dll</code> 删除，并安装最新的 <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170" class="underline">Microsoft Visual C++ Redistributable</a>。' +
+                    '</div>' +
+                    '<p class="mt-8 text-gray-400 text-sm italic">更详细的文档和技术细节请参考：<a href="https://github.com/Minecraft-Radiance/Radiance" target="_blank" class="text-orange-400 underline ml-1">Radiance Github Repo</a></p>',
                 'changelog.v0_1_0.badge': '初始发布',
-                'changelog.v0_1_0.title': 'v0.1.0 - 黎明初现',
-                'changelog.v0_1_0.date': '2025-02-15',
-                'changelog.v0_1_0.item1': '[发布] 首个公开预览版，开启次世代光影体验',
-                'changelog.v0_1_0.item2': '[核心] 完整的 Vulkan 渲染后端实现',
-                'changelog.v0_1_0.item3': '[特性] 基础硬件光线追踪管线与路径追踪支持,加入DLSS 4支持',
+                'changelog.v0_1_0.title': 'v0.1.0',
+                'changelog.v0_1_0.date': '2025-12-29',
+                'changelog.v0_1_0.item1': '首个公开预览版，开启次世代光影体验',
+                'changelog.v0_1_0.item2': '完整的 Vulkan 渲染后端实现',
+                'changelog.v0_1_0.item3': '基础硬件光线追踪管线与路径追踪支持,加入DLSS 4支持',
                 'changelog.main_title': 'Radiance版本历史',
-                'footer.copyright': 'Radiance. 非官方 Minecraft Mod 项目.'
+                'footer.copyright': 'Radiance. 非官方 Minecraft Mod 项目.',
+                'footer.credits': 'Features Vulkan & NVIDIA DLSS technology. All trademarks are property of their respective owners.'
             },
             'en': {
+                'site.title': 'Radiance - Minecraft Ray Tracing Mod',
+                'site.desc': 'Radiance - Next-Gen Minecraft Path Tracing engine mod. Rebuilt on Vulkan C++ backend, featuring native Hardware Ray Tracing support.',
                 'nav.home': 'Home',
                 'nav.features': 'Features',
+                'nav.gallery': 'Gallery',
                 'nav.docs': 'Wiki',
                 'nav.changelog': 'Changelog',
                 'nav.download': 'Download',
@@ -543,14 +719,23 @@
                 'hero.title': 'Next-Gen Minecraft Path Tracing Engine',
                 'hero.desc': 'Break free from OpenGL limits. Radiance is rebuilt on a Vulkan C++ backend, featuring native Hardware Ray Tracing on Windows & Linux. Unleash your GPU\'s full potential.',
                 'hero.btn_download': 'Download Preview Version',
+                'hero.btn_gallery': 'View Gallery',
                 'hero.btn_docs': 'Read Installation Docs',
                 'features.title': 'Core Innovations',
-                'features.card1.title': 'Vulkan Core Overhaul',
-                'features.card1.desc': 'Complete OpenGL Bypass. Replaces the OpenGL pipeline with a highly concurrent Vulkan backend to unlock true multi-core performance.',
+                'features.card1.title': '<a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> Core Overhaul',
+                'features.card1.desc': 'Complete OpenGL Bypass. Replaces the OpenGL pipeline with a highly concurrent <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> backend to unlock true multi-core performance.',
                 'features.card2.title': 'Hardware Ray Tracing',
-                'features.card2.desc': 'Powered by Vulkan Ray Tracing Pipeline (KHR). Directly harnesses RT Core hardware acceleration, vastly outperforming software emulation.',
+                'features.card2.desc': 'Powered by <a href="https://docs.vulkan.org/refpages/latest/refpages/source/VK_KHR_ray_tracing_pipeline.html" target="_blank" class="underline hover:text-orange-400">Vulkan Ray Tracing Pipeline</a> (KHR). Directly harnesses RT Core hardware acceleration, vastly outperforming software emulation.',
                 'features.card3.title': 'Cross-Platform Performance',
-                'features.card3.desc': 'Full support for Windows & Linux. The Vulkan pipeline delivers vastly superior performance over legacy shaders, making ray tracing playable, not a slideshow.',
+                'features.card3.desc': 'Full support for Windows & Linux. The <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> pipeline delivers vastly superior performance over legacy shaders, making ray tracing playable, not a slideshow.',
+                'gallery.title': 'Visual Showcase',
+                'gallery.subtitle': 'Real-time recordings showcasing the power of our rendering engine.',
+                'gallery.video1.title': 'Radiance Official Trailer',
+                'gallery.video1.desc': 'Immerse yourself in next-gen visuals. Featuring Ray Tracing, dynamic interactions, and extreme performance.',
+                'gallery.video2.title': 'Interior Path Tracing',
+                'gallery.video2.desc': 'Perfect fusion of emissive blocks, and complex light paths.',
+                'gallery.video3.title': 'Combat Interaction',
+                'gallery.video3.desc': 'Dynamic light sources and ghost-free motion when attacking Slimes.',
                 'features_page.title': 'Radiance Mod Technical Features',
                 'features_page.subtitle': 'Rebuilt from the ground up to empower Minecraft with next-gen rendering.',
                 'features_page.rt.title': 'Full Path Tracing',
@@ -563,46 +748,69 @@
                 'features_page.interact.point1': 'Full Dynamic Entity Shadows (Player, Mobs, Items)',
                 'features_page.interact.point2': 'Dynamic Light Source Shadow Casting (Handheld & Thrown)',
                 'features_page.upscale.title': 'Deep Learning Upscaling',
-                'features_page.upscale.status': 'DLSS 4 NATIVE',
-                'features_page.upscale.desc': 'Maintaining high framerates at high resolutions is a challenge. Radiance natively integrates NVIDIA DLSS and is actively working on AMD FSR support to boost performance without sacrificing quality.',
-                'features_page.upscale.point1': 'NVIDIA DLSS 4 Ray Reconstruction Ready',
+                'features_page.upscale.status': '<a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">DLSS 4</a> NATIVE',
+                'features_page.upscale.desc': 'Maintaining high framerates at high resolutions is a challenge. Radiance natively integrates <a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS</a> and is actively working on AMD FSR support to boost performance without sacrificing quality.',
+                'features_page.upscale.point1': '<a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS 4</a> Ray Reconstruction Ready',
                 'features_page.upscale.point2': 'AMD FSR 3.0 Support In Progress',
-                'features_page.pbr.title': 'Physically Based Materials (In Development)',
-                'features_page.pbr.desc': 'Building a next-gen material pipeline supporting LabPBR. Cook-Torrance BRDF models will bring true physical textures to blocks.',
-                'features_page.pbr.point1': '[ROADMAP] Micro-surface GGX Specular Reflection',
-                'features_page.pbr.point2': '[ROADMAP] Native Normal Map & Displacement support',
                 'download.title': 'Download Preview Build',
-                'download.preview.title': 'Preview Version',
-                'download.preview.meta': 'Supports Windows & Linux | Requires Vulkan RT compatible Nvidia GPU',
+                'download.modrinth.title': 'Modrinth Preview',
+                'download.curseforge.title': 'CurseForge Preview',
+                'download.preview.meta': 'Supports Windows & Linux<br>Requires Vulkan RT compatible Nvidia GPU',
+                'download.btn_docs': 'Read Installation Docs',
                 'docs.install.main_title': 'Installation Guide',
                 'docs.install.req_title': 'System Requirements',
                 'docs.install.req_list': 'Nvidia GPU with VK_KHR_ray_tracing_pipeline extension (RTX 20 series+, check details <a href="https://vulkan.gpuinfo.org/">here</a>)',
                 'docs.install.install_title': 'Installation Steps',
-                'docs.install.install_step': 'Place the mod file into your Minecraft mods folder.' + 
+                'docs.install.install_step': '<ol class="list-decimal list-inside space-y-4">' + 
+                    '<li>Place the mod file into your Minecraft <code>mods</code> folder.</li>' +
+                    '<li>Manually download <code>nvngx_dlss.dll</code> (v310.3.0 or above) and place it in the <code>.minecraft/radiance</code> folder (create it if it doesn\'t exist).</li>' +
+                    '</ol>' +
                     '<div class="bg-yellow-900/30 border border-yellow-500/50 p-4 mt-8 rounded text-sm text-yellow-200">' + 
                     '<span class="font-bold">NOTE:</span> For Windows users, you need to delete <code>msvcp140.dll</code>, <code>vcruntime140_1.dll</code>, and <code>vcruntime140.dll</code> from your <code>{JDK_PATH}/bin/</code> directory, then install the latest <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170">Microsoft Visual C++ Redistributable</a>.' +
-                    '</div>',
+                    '</div>' +
+                    '<p class="mt-8 text-gray-400 text-sm italic">For more detailed documentation and technical insights, please visit: <a href="https://github.com/Minecraft-Radiance/Radiance" target="_blank" class="text-orange-400 underline ml-1">Radiance Github Repo</a></p>',
                 'changelog.v0_1_0.badge': 'INITIAL RELEASE',
-                'changelog.v0_1_0.title': 'v0.1.0 - The Dawn of Radiance',
-                'changelog.v0_1_0.date': '2025-02-15',
-                'changelog.v0_1_0.item1': '[Release] First public preview version',
-                'changelog.v0_1_0.item2': '[Core] Full Vulkan rendering backend implementation',
-                'changelog.v0_1_0.item3': '[Feature] Basic hardware ray tracing and path tracing support',
+                'changelog.v0_1_0.title': 'v0.1.0',
+                'changelog.v0_1_0.date': '2025-12-29',
+                'changelog.v0_1_0.item1': 'First public preview version',
+                'changelog.v0_1_0.item2': 'Full Vulkan rendering backend implementation',
+                'changelog.v0_1_0.item3': 'Basic hardware ray tracing, and path tracing support. Features DLSS 4.',
                 'changelog.main_title': 'Radiance Version History',
-                'footer.copyright': 'Radiance. Unofficial Minecraft Mod Project.'
+                'footer.copyright': 'Radiance. Unofficial Minecraft Mod Project.',
+                'footer.credits': 'Features Vulkan & NVIDIA DLSS technology. All trademarks are property of their respective owners.'
             }
         };
 
-        let currentLang = 'zh';
+        // Auto-detect language, default to 'en'
+        let userLang = navigator.language || navigator.userLanguage; 
+        let currentLang = userLang.startsWith('zh') ? 'zh' : 'en';
 
         function updateLanguage(lang) {
             currentLang = lang;
+            
+            // Update Text Content
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
                 if (translations[lang] && translations[lang][key]) {
                     element.innerHTML = translations[lang][key];
                 }
             });
+
+            // Update Title & Meta
+            if (translations[lang]) {
+                if (translations[lang]['site.title']) {
+                    document.title = translations[lang]['site.title'];
+                }
+                if (translations[lang]['site.desc']) {
+                    const desc = translations[lang]['site.desc'];
+                    document.querySelector('meta[name="description"]').setAttribute('content', desc);
+                    document.querySelector('meta[property="og:title"]').setAttribute('content', translations[lang]['site.title']);
+                    document.querySelector('meta[property="og:description"]').setAttribute('content', desc);
+                    document.querySelector('meta[property="twitter:title"]').setAttribute('content', translations[lang]['site.title']);
+                    document.querySelector('meta[property="twitter:description"]').setAttribute('content', desc);
+                }
+            }
+
             document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : 'ZH';
         }
 
@@ -610,9 +818,74 @@
             updateLanguage(currentLang === 'zh' ? 'en' : 'zh');
         });
 
-        // ----------------- Shader 背景逻辑 (已移除) ----------------- 
-        // Original shader-related JavaScript code was removed as per user request.
-        // The background is now handled by a video element.
+        // ----------------- 灯箱 (Lightbox) 逻辑 (增强版) -----------------
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxVideo = document.getElementById('lightbox-video');
+
+        function openLightbox(source, type = 'image') {
+            lightbox.classList.remove('hidden');
+            lightbox.style.display = 'flex'; // Force flex display
+            // 简单的淡入效果
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+
+            if (type === 'image') {
+                lightboxImg.src = source;
+                lightboxImg.classList.remove('hidden');
+                lightboxVideo.classList.add('hidden');
+                lightboxVideo.pause();
+            } else if (type === 'video') {
+                lightboxVideo.src = source;
+                lightboxVideo.classList.remove('hidden');
+                lightboxImg.classList.add('hidden');
+                lightboxVideo.play();
+            }
+        }
+
+        function closeLightbox(e) {
+            // 点击内容本身不关闭，只点击背景或按钮关闭
+            if (e && (e.target === lightboxImg || e.target === lightboxVideo)) return;
+
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightbox.style.display = 'none';
+                // 停止视频播放并清空源，防止后台播放
+                lightboxVideo.pause();
+                lightboxVideo.src = "";
+                lightboxImg.src = "";
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        // 绑定所有图片的点击事件
+        document.querySelectorAll('.zoom-container img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.preventDefault();
+                // 如果当前显示的是占位图（加载失败），则不触发放大
+                if (img.src.includes('placehold.co')) return;
+
+                openLightbox(img.src, 'image');
+            });
+        });
+
+        // 绑定 Gallery 视频的点击事件
+        // 我们监听 .zoom-video-container 下的点击
+        document.querySelectorAll('.zoom-video-container').forEach(container => {
+            container.addEventListener('click', (e) => {
+                // 找到里面的 video 元素
+                const video = container.querySelector('video');
+                // 找到 source
+                const source = video.querySelector('source') ? video.querySelector('source').src : video.src;
+                
+                if (source) {
+                    openLightbox(source, 'video');
+                }
+            });
+        });
 
     </script>
 </body>
