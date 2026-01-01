@@ -299,16 +299,32 @@
                 <i data-lucide="download-cloud" class="w-16 h-16 mx-auto text-orange-400 mb-6"></i>
                 <h2 class="text-2xl text-white mb-8" data-i18n="download.title"></h2>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                    <a href="https://modrinth.com/project/radiance-mod" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group">
-                        <span class="text-base mb-2" data-i18n="download.modrinth.title"></span>
-                        <span class="text-[12px] text-gray-500 group-hover:text-black" data-i18n="download.preview.meta"></span>
+                <div class="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+                    <!-- GitHub Release -->
+                    <a href="https://github.com/Minecraft-Radiance/Radiance/releases/tag/v0.1.0-preview" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
+                        <span class="text-base mb-2 font-bold" data-i18n="download.github.title"></span>
+                        <span class="text-[12px] text-gray-400 group-hover:text-black" data-i18n="download.preview.meta"></span>
                     </a>
-                    <a href="https://legacy.curseforge.com/minecraft/mc-mods/radiance" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group">
-                        <span class="text-base mb-2" data-i18n="download.curseforge.title"></span>
-                        <span class="text-[12px] text-gray-500 group-hover:text-black" data-i18n="download.preview.meta"></span>
+
+                    <!-- Modrinth (Review) -->
+                    <a href="https://modrinth.com/project/radiance-mod" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
+                        <span class="text-base mb-2 font-bold">
+                            <span data-i18n="download.modrinth.title"></span>
+                            <span class="text-xs opacity-80 ml-1" data-i18n="download.status.review"></span>
+                        </span>
+                        <span class="text-[12px] text-gray-400 group-hover:text-black" data-i18n="download.preview.meta"></span>
                     </a>
-                    <a href="#docs" class="sm:col-span-2 btn-glass py-4 flex items-center justify-center font-bold tracking-wide uppercase hover:bg-white/10 transition-colors" data-i18n="download.btn_docs">
+
+                    <!-- CurseForge (Review) -->
+                    <a href="https://legacy.curseforge.com/minecraft/mc-mods/radiance" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
+                        <span class="text-base mb-2 font-bold">
+                            <span data-i18n="download.curseforge.title"></span>
+                            <span class="text-xs opacity-80 ml-1" data-i18n="download.status.review"></span>
+                        </span>
+                        <span class="text-[12px] text-gray-400 group-hover:text-black" data-i18n="download.preview.meta"></span>
+                    </a>
+
+                    <a href="#docs" class="btn-glass py-6 flex items-center justify-center font-bold tracking-wide uppercase hover:bg-white/10 transition-colors" data-i18n="download.btn_docs">
                     </a>
                 </div>
             </div>
@@ -506,8 +522,10 @@
                 'features_page.upscale.point1': '<a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS 4</a> 光线重构已就绪',
                 'features_page.upscale.point2': 'AMD FSR 3 支持正在开发中',
                 'download.title': '下载预览版',
-                'download.modrinth.title': 'Modrinth 预览版',
-                'download.curseforge.title': 'CurseForge 预览版',
+                'download.github.title': 'GitHub Release (目前可用)',
+                'download.modrinth.title': 'Modrinth',
+                'download.curseforge.title': 'CurseForge',
+                'download.status.review': '(审核中)',
                 'download.preview.meta': '支持 Windows & Linux<br>需兼容 Vulkan RT 的 Nvidia GPU',
                 'download.btn_docs': '阅读安装文档',
                 'docs.install.main_title': '安装指南',
@@ -572,8 +590,10 @@
                 'features_page.upscale.point1': '<a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS 4</a> Ray Reconstruction Ready',
                 'features_page.upscale.point2': 'AMD FSR 3.0 Support In Progress',
                 'download.title': 'Download Preview Build',
-                'download.modrinth.title': 'Modrinth Preview',
-                'download.curseforge.title': 'CurseForge Preview',
+                'download.github.title': 'GitHub Release (Available Now)',
+                'download.modrinth.title': 'Modrinth',
+                'download.curseforge.title': 'CurseForge',
+                'download.status.review': '(Under Review)',
                 'download.preview.meta': 'Supports Windows & Linux<br>Requires Vulkan RT compatible Nvidia GPU',
                 'download.btn_docs': 'Read Installation Docs',
                 'docs.install.main_title': 'Installation Guide',
