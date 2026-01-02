@@ -133,16 +133,24 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- 视频卡片 1 -->
-                <div class="glass p-0 overflow-hidden group relative zoom-video-container cursor-pointer">
-                    <!-- 播放按钮遮罩 -->
-                    <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
-                        <div class="w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-black/20 backdrop-blur-sm group-hover:scale-110 group-hover:border-orange-500 transition-all shadow-xl">
-                            <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                <div class="glass p-0 overflow-hidden group relative" id="video1-card">
+                    <!-- English version content -->
+                    <div id="video1-en" class="zoom-video-container cursor-pointer">
+                        <!-- 播放按钮遮罩 -->
+                        <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
+                            <div class="w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-black/20 backdrop-blur-sm group-hover:scale-110 group-hover:border-orange-500 transition-all shadow-xl">
+                                <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                            </div>
                         </div>
+                        <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover" poster="resources/cover_trailor.png">
+                            <source src="https://image.puxuan.cc/PicGo/english_default_60.mp4" type="video/mp4">
+                        </video>
                     </div>
-                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover" poster="resources/cover_trailor.png">
-                        <source src="https://image.puxuan.cc/PicGo/english_default_60.mp4" type="video/mp4">
-                    </video>
+                    <!-- Chinese version content (Bilibili Iframe) -->
+                    <div id="video1-zh" class="hidden w-full aspect-video">
+                        <iframe src="https://player.bilibili.com/player.html?isOutside=true&aid=115820906683133&bvid=BV1NevXBCEPg&cid=35130573412&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="w-full h-full"></iframe>
+                    </div>
+
                     <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
                         <h3 class="text-orange-400 font-bold text-lg" data-i18n="gallery.video1.title">Radiance Official Trailer</h3>
                         <p class="text-gray-300 text-sm" data-i18n="gallery.video1.desc">Immerse yourself in next-gen visuals.</p>
@@ -627,6 +635,19 @@
                     element.innerHTML = translations[lang][key];
                 }
             });
+
+            // Video 1 Toggle
+            const v1En = document.getElementById('video1-en');
+            const v1Zh = document.getElementById('video1-zh');
+            if (v1En && v1Zh) {
+                if (lang === 'zh') {
+                    v1En.classList.add('hidden');
+                    v1Zh.classList.remove('hidden');
+                } else {
+                    v1En.classList.remove('hidden');
+                    v1Zh.classList.add('hidden');
+                }
+            }
 
             // Update Title & Meta
             if (translations[lang]) {
