@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radiance - Minecraft Ray Tracing Mod</title>
-    <link rel="icon" href="resources/logo-radiance.png" type="image/png">
+    <link rel="icon" href="resources/logo-radiance.webp" type="image/webp">
     <meta name="description" content="Radiance - Next-Gen Minecraft Path Tracing engine mod. Rebuilt on Vulkan C++ backend, featuring native Hardware Ray Tracing support.">
     <meta name="keywords" content="Minecraft, Shader, Ray Tracing, Vulkan, Rendering, Mod, Radiance">
     <!-- Open Graph / Facebook -->
@@ -12,24 +12,27 @@
     <meta property="og:url" content="https://radiance.mc/">
     <meta property="og:title" content="Radiance - Minecraft Ray Tracing Mod">
     <meta property="og:description" content="Radiance - Next-Gen Minecraft Path Tracing engine mod. Rebuilt on Vulkan C++ backend, featuring native Hardware Ray Tracing support.">
-    <meta property="og:image" content="resources/logo-radiance.png">
+    <meta property="og:image" content="resources/logo-radiance.webp">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://radiance.mc/">
     <meta property="twitter:title" content="Radiance - Minecraft Ray Tracing Mod">
     <meta property="twitter:description" content="Radiance - Next-Gen Minecraft Path Tracing engine mod. Rebuilt on Vulkan C++ backend, featuring native Hardware Ray Tracing support.">
-    <meta property="twitter:image" content="resources/logo-radiance.png">
+    <meta property="twitter:image" content="resources/logo-radiance.webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
+    <!-- Preload critical font -->
+    <link rel="preload" href="fonts/fusion-pixel/fusion-pixel-10px-monospaced-latin.ttf.woff2" as="font" type="font/woff2" crossorigin>
+
     <!-- 引入外部样式表 (包含字体定义和 Firefox 优化) -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <!-- 视频背景 -->
-    <video autoplay loop muted playsinline id="video-background" class="transition-opacity duration-1000 opacity-30">
-        <source src="resources/campfire.mp4" type="video/mp4">
+    <video loop muted playsinline id="video-background" class="transition-opacity duration-1000 opacity-30">
+        <!-- Source injected via JS for performance -->
         Your web browser does not support / 您的浏览器不支持 HTML5 视频。
     </video>
     <!-- 视频遮罩层 (用于替代滤镜以提升性能) -->
@@ -39,7 +42,7 @@
     <nav class="fixed w-full z-50 px-6 py-4 flex justify-between items-center transition-all duration-300 border-b border-transparent bg-[#0a0a0a]/80 backdrop-blur-md" id="navbar">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.hash='home'">
             <div class="w-10 h-10 rounded-none flex items-center justify-center border-2 border-white/50 shadow-[2px_2px_0px_rgba(255,255,255,0.3)] bg-black">
-                <img src="resources/logo-radiance.png" alt="Radiance Logo" class="w-full h-full object-cover js-logo-img">
+                <img src="resources/logo-radiance.webp" alt="Radiance Logo" class="w-full h-full object-cover js-logo-img">
             </div>
             <span class="text-white text-base md:text-lg tracking-widest hidden sm:inline">RADIANCE</span>
         </div>
@@ -157,7 +160,7 @@
                             <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
                         </div>
                     </div>
-                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover" poster="resources/room-walkthrough.png">
+                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover" poster="resources/room-walkthrough.webp">
                         <source src="https://image.puxuan.cc/PicGo/room-walkthrough.mp4" type="video/mp4">
                     </video>
                     <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
@@ -199,7 +202,7 @@
             <!-- Feature Block 1: Ray Tracing -->
             <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
                 <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
-                    <img id="img-feature-rt" src="" alt="Ray Tracing" class="w-full h-full object-cover min-h-[300px]" 
+                    <img id="img-feature-rt" src="" alt="Ray Tracing" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
                          onerror="this.src='https://placehold.co/800x600/1a1a1a/orange?text=RTX+Preview'; this.onerror=null;">
                     <div class="text-center p-10 hidden w-full h-full flex flex-col justify-center items-center absolute inset-0">
                          <!-- Fallback Icon if image missing -->
@@ -221,7 +224,7 @@
             <!-- Feature Block 1.5: Interaction -->
             <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-20">
                 <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
-                    <img id="img-feature-interact" src="" alt="Dynamic Interaction" class="w-full h-full object-cover min-h-[300px]" 
+                    <img id="img-feature-interact" src="" alt="Dynamic Interaction" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
                          onerror="this.src='https://placehold.co/800x600/1a1a1a/3b82f6?text=Interaction'; this.onerror=null;">
                     <div class="text-center p-10 hidden w-full h-full flex flex-col justify-center items-center absolute inset-0">
                         <i data-lucide="hand" class="w-16 h-16 text-blue-500 mb-4"></i>
@@ -241,7 +244,7 @@
             <!-- Feature Block 2: Upscaling -->
             <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
                 <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
-                    <img id="img-feature-upscale" src="" alt="Deep Learning Upscaling" class="w-full h-full object-cover min-h-[300px]" 
+                    <img id="img-feature-upscale" src="" alt="Deep Learning Upscaling" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
                          onerror="this.src='https://placehold.co/800x600/1a1a1a/eab308?text=DLSS+Upscaling'; this.onerror=null;">
                      <div class="text-center p-10 hidden w-full h-full flex flex-col justify-center items-center absolute inset-0">
                         <i data-lucide="zap" class="w-16 h-16 text-yellow-500 mb-4"></i>
@@ -329,6 +332,7 @@
                     <a href="https://www.curseforge.com/minecraft/mc-mods/radiance/gallery" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
                         <span class="text-base mb-2 font-bold">
                             <span data-i18n="download.curseforge.title"></span>
+                            <span class="text-xs opacity-80 ml-1" data-i18n="download.status.review"></span>
                         </span>
                         <span class="text-sm text-gray-700 font-medium group-hover:text-black" data-i18n="download.preview.meta"></span>
                     </a>
@@ -379,7 +383,7 @@
     <script>
         // ----------------- 站点配置 (Site Configuration) ----------------- 
         const SITE_CONFIG = {
-            logoPath: 'resources/logo-radiance.png',
+            logoPath: 'resources/logo-radiance.webp',
             featureImages: {
                 rt: 'https://image.puxuan.cc/PicGo/woods.png',       // Ray Tracing 图片 (支持图床链接)
                 interact: 'https://image.puxuan.cc/PicGo/gloom.png', // Interaction 图片
@@ -533,7 +537,7 @@
                 'download.title': '下载预览版',
                 'download.github.title': 'GitHub Release (目前可用)',
                 'download.modrinth.title': 'Modrinth',
-                'download.curseforge.title': 'CurseForge (目前可用)',
+                'download.curseforge.title': 'CurseForge',
                 'download.status.review': '(审核中)',
                 'download.preview.meta': '支持 Windows & Linux<br>需兼容 Vulkan RT 的 Nvidia GPU',
                 'download.btn_docs': '阅读安装文档',
@@ -605,7 +609,7 @@
                 'download.title': 'Download Preview Build',
                 'download.github.title': 'GitHub Release (Available Now)',
                 'download.modrinth.title': 'Modrinth',
-                'download.curseforge.title': 'CurseForge (Available Now)',
+                'download.curseforge.title': 'CurseForge',
                 'download.status.review': '(Under Review)',
                 'download.preview.meta': 'Supports Windows & Linux<br>Requires Vulkan RT compatible Nvidia GPU',
                 'download.btn_docs': 'Read Installation Docs',
@@ -798,6 +802,27 @@
             document.body.classList.add('is-firefox');
             console.log('Firefox detected: Performance mode enabled.');
         }
+
+        // Defer Video Loading to improve initial page load speed
+        window.addEventListener('load', function() {
+            // Use a small timeout to ensure the main thread is clear
+            setTimeout(function() {
+                var video = document.getElementById('video-background');
+                if(video) {
+                    var source = document.createElement('source');
+                    source.src = 'resources/campfire_pressed.mp4';
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    video.load(); // Required when adding source dynamically
+                    var playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(function(error) {
+                            console.log('Video autoplay prevented by browser policy or error:', error);
+                        });
+                    }
+                }
+            }, 100); 
+        });
 
     </script>
 </body>

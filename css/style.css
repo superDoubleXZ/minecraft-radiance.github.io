@@ -3,6 +3,7 @@
             src: url('../fonts/fusion-pixel/fusion-pixel-10px-monospaced-latin.ttf.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
             unicode-range: U+0020-007E, U+00A0-00FF, U+2000-206F, U+2070-209F, U+20A0-20CF, U+2100-214F, U+2150-218F, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+2400-243F, U+2440-245F, U+2460-24FF, U+2500-257F, U+2580-259F, U+25A0-25FF, U+2600-26FF, U+2700-27BF, U+27C0-27EF, U+27F0-27FF, U+2800-28FF, U+2900-297F, U+2980-29FF, U+2A00-2AFF, U+2B00-2BFF, U+2C00-2C5F, U+2C60-2C7F, U+2C80-2CFF, U+2D00-2D2F, U+2D30-2D7F, U+2D80-2DFF, U+2E00-2E7F, U+2E80-2EFF, U+2F00-2FDF, U+2FF0-2FFF;
         }
         @font-face {
@@ -10,6 +11,7 @@
             src: url('../fonts/fusion-pixel/fusion-pixel-10px-monospaced-ja.ttf.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
             unicode-range: U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF00-FFEF, U+4E00-9FFF;
         }
         @font-face {
@@ -17,6 +19,7 @@
             src: url('../fonts/fusion-pixel/fusion-pixel-10px-monospaced-ko.ttf.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
             unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F;
         }
         @font-face {
@@ -24,6 +27,7 @@
             src: url('../fonts/fusion-pixel/fusion-pixel-10px-monospaced-zh_hans.ttf.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
             unicode-range: U+20-7E, U+2000-206F, U+2500-25FF, U+2600-26FF, U+2700-27BF, U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+3100-312F, U+3130-318F, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
         }
         @font-face {
@@ -31,6 +35,7 @@
             src: url('../fonts/fusion-pixel/fusion-pixel-10px-monospaced-zh_hant.ttf.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
             unicode-range: U+20-7E, U+2000-206F, U+2500-25FF, U+2600-26FF, U+2700-27BF, U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+3100-312F, U+3130-318F, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF, U+20000-2A6DF, U+2F800-2FA1F;
         }
         
