@@ -135,24 +135,39 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- 视频卡片 1 -->
-                <div class="glass p-0 overflow-hidden group relative" id="video1-card">
-                    <!-- English version content -->
-                    <div id="video1-en" class="w-full aspect-video">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/jGIQffPM1Wg?origin=http://localhost&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <!-- 视频卡片 1: Alpha 0.1.3 Showcase (Newest) -->
+                <div class="glass p-0 overflow-hidden group relative" id="video-alpha-card">
+                    <!-- English (YouTube) -->
+                    <div id="video-alpha-en" class="w-full aspect-video">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/e97xv0BchMA?si=882YNDYEWpZYGuhX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
-                    <!-- Chinese version content (Bilibili Iframe) -->
-                    <div id="video1-zh" class="hidden w-full aspect-video">
-                        <iframe src="https://player.bilibili.com/player.html?isOutside=true&aid=115820906683133&bvid=BV1NevXBCEPg&cid=35130573412&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="w-full h-full"></iframe>
+                    <!-- Chinese (Bilibili) -->
+                    <div id="video-alpha-zh" class="hidden w-full aspect-video">
+                        <iframe src="https://player.bilibili.com/player.html?isOutside=true&aid=116041912948011&bvid=BV18SFyzoEBw&cid=35944203736&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="w-full h-full"></iframe>
                     </div>
-
                     <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
-                        <h3 class="text-orange-400 font-bold text-lg" data-i18n="gallery.video1.title">Radiance Official Trailer</h3>
-                        <p class="text-gray-300 text-sm" data-i18n="gallery.video1.desc">Immerse yourself in next-gen visuals.</p>
+                        <h3 class="text-orange-400 font-bold text-lg" data-i18n="gallery.video_alpha.title"></h3>
+                        <p class="text-gray-300 text-sm" data-i18n="gallery.video_alpha.desc"></p>
                     </div>
                 </div>
 
-                <!-- 视频卡片 2 -->
+                <!-- 视频卡片 2: Radiance Official Trailer -->
+                <div class="glass p-0 overflow-hidden group relative" id="video1-card">
+                    <!-- English (YouTube) -->
+                    <div id="video1-en" class="w-full aspect-video">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/jGIQffPM1Wg?origin=http://localhost&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <!-- Chinese (Bilibili) -->
+                    <div id="video1-zh" class="hidden w-full aspect-video">
+                        <iframe src="https://player.bilibili.com/player.html?isOutside=true&aid=115820906683133&bvid=BV1NevXBCEPg&cid=35130573412&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="w-full h-full"></iframe>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
+                        <h3 class="text-yellow-400 font-bold text-lg" data-i18n="gallery.video1.title"></h3>
+                        <p class="text-gray-300 text-sm" data-i18n="gallery.video1.desc"></p>
+                    </div>
+                </div>
+
+                <!-- 视频卡片 3: Path Tracing Showcase -->
                 <div class="glass p-0 overflow-hidden group relative zoom-video-container cursor-pointer">
                     <!-- 播放按钮遮罩 -->
                     <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
@@ -164,25 +179,8 @@
                         <source src="https://image.puxuan.cc/PicGo/room-walkthrough.mp4" type="video/mp4">
                     </video>
                     <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
-                        <h3 class="text-yellow-400 font-bold text-lg" data-i18n="gallery.video2.title">Path Tracing Showcase</h3>
+                        <h3 class="text-amber-400 font-bold text-lg" data-i18n="gallery.video2.title">Path Tracing Showcase</h3>
                         <p class="text-gray-300 text-sm" data-i18n="gallery.video2.desc">Complex light bounces and physical materials.</p>
-                    </div>
-                </div>
-
-                <!-- 视频卡片 3 -->
-                <div class="glass p-0 overflow-hidden group relative zoom-video-container cursor-pointer">
-                    <!-- 播放按钮遮罩 -->
-                    <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/20 group-hover:bg-black/40 transition-all">
-                        <div class="w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-black/20 backdrop-blur-sm group-hover:scale-110 group-hover:border-red-500 transition-all shadow-xl">
-                            <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
-                        </div>
-                    </div>
-                    <video loop muted playsinline oncontextmenu="return false;" class="w-full aspect-video object-cover">
-                        <source src="https://image.puxuan.cc/PicGo/attack.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black to-transparent pointer-events-none">
-                        <h3 class="text-red-400 font-bold text-lg" data-i18n="gallery.video3.title">Combat Interaction</h3>
-                        <p class="text-gray-300 text-sm" data-i18n="gallery.video3.desc">Dynamic lighting effects during combat.</p>
                     </div>
                 </div>
             </div>
@@ -216,12 +214,11 @@
                     <ul class="space-y-4 text-base text-gray-300">
                         <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.rt.point1"></span></li>
                         <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.rt.point2"></span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.rt.point3"></span></li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Feature Block 1.5: Interaction -->
+            <!-- Feature Block 2: Interaction -->
             <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-20">
                 <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
                     <img id="img-feature-interact" src="" alt="Dynamic Interaction" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
@@ -241,7 +238,7 @@
                 </div>
             </div>
 
-            <!-- Feature Block 2: Upscaling -->
+            <!-- Feature Block 3: Upscaling -->
             <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
                 <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
                     <img id="img-feature-upscale" src="" alt="Deep Learning Upscaling" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
@@ -259,7 +256,40 @@
                     <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.upscale.desc"></p>
                     <ul class="space-y-4 text-base text-gray-300">
                         <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.upscale.point1"></span></li>
-                        <li class="flex items-center"><i data-lucide="clock" class="w-5 h-5 mr-3 text-yellow-500"></i> <span data-i18n="features_page.upscale.point2"></span></li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.upscale.point2"></span></li>
+                        <li class="flex items-center"><i data-lucide="flask-conical" class="w-5 h-5 mr-3 text-blue-400"></i> <span data-i18n="features_page.upscale.point3"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature Block 4: PBR Materials -->
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-20">
+                <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
+                    <img id="img-feature-pbr" src="https://image.puxuan.cc/PicGo/2026-02-09_00.45.30.png" alt="PBR Materials" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
+                         onerror="this.src='https://placehold.co/800x600/1a1a1a/orange?text=PBR+Preview'; this.onerror=null;">
+                </div>
+                <div class="w-full md:w-1/2 glass p-8 rounded-xl bg-black/40">
+                    <h2 class="text-3xl text-emerald-400 mb-6 font-bold" data-i18n="features_page.pbr.title"></h2>
+                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.pbr.desc"></p>
+                    <ul class="space-y-4 text-base text-gray-300">
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.pbr.point1"></span></li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-3 text-green-500"></i> <span data-i18n="features_page.pbr.point2"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature Block 5: Dynamic Pipeline -->
+            <div class="flex flex-col md:flex-row items-center gap-12 mb-20">
+                <div class="w-full md:w-1/2 glass p-0 min-h-[300px] flex items-center justify-center bg-black/50 zoom-container group">
+                    <img id="img-feature-pipeline" src="https://image.puxuan.cc/PicGo/pipeline.png" alt="Dynamic Pipeline" class="w-full h-full object-cover min-h-[300px]" loading="lazy"
+                         onerror="this.src='https://placehold.co/800x600/1a1a1a/orange?text=Pipeline+Preview'; this.onerror=null;">
+                </div>
+                <div class="w-full md:w-1/2 glass p-8 rounded-xl bg-black/40">
+                    <h2 class="text-3xl text-violet-400 mb-6 font-bold" data-i18n="features_page.pipeline.title"></h2>
+                    <p class="text-gray-200 text-lg leading-relaxed mb-8" data-i18n="features_page.pipeline.desc"></p>
+                    <ul class="space-y-4 text-base text-gray-300">
+                        <li class="flex items-center"><i data-lucide="layers" class="w-5 h-5 mr-3 text-indigo-400"></i> <span data-i18n="features_page.pipeline.point1"></span></li>
+                        <li class="flex items-center"><i data-lucide="zap" class="w-5 h-5 mr-3 text-yellow-400"></i> <span data-i18n="features_page.pipeline.point2"></span></li>
                     </ul>
                 </div>
             </div>
@@ -282,24 +312,35 @@
             <h1 class="text-2xl md:text-3xl text-white mb-10 text-center" data-i18n="changelog.main_title"></h1>
             
             <div class="space-y-8">
+                <!-- v0.1.3 -->
+                <div class="glass p-8 relative border-l-4 border-orange-500">
+                    <div class="absolute top-4 right-4 bg-orange-900/50 text-yellow-400 px-3 py-1 text-[12px] border border-orange-500" data-i18n="changelog.v0_1_3.badge"></div>
+                    <h2 class="text-xl text-white mb-2" data-i18n="changelog.v0_1_3.title"></h2>
+                    <div class="text-gray-500 text-[12px] mb-6" data-i18n="changelog.v0_1_3.date"></div>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-300 mb-6">
+                        <li data-i18n="changelog.v0_1_3.item1"></li>
+                        <li data-i18n="changelog.v0_1_3.item2"></li>
+                        <li data-i18n="changelog.v0_1_3.item3"></li>
+                        <li data-i18n="changelog.v0_1_3.item4"></li>
+                        <li data-i18n="changelog.v0_1_3.item5"></li>
+                        <li data-i18n="changelog.v0_1_3.item6"></li>
+                        <li data-i18n="changelog.v0_1_3.item7"></li>
+                        <li data-i18n="changelog.v0_1_3.item8"></li>
+                        <li data-i18n="changelog.v0_1_3.item9"></li>
+                        <li data-i18n="changelog.v0_1_3.item10"></li>
+                        <li data-i18n="changelog.v0_1_3.item11"></li>
+                    </ul>
+                </div>
+
                 <!-- v0.1.2 -->
                 <div class="glass p-8 relative border-l-4 border-orange-500">
                     <div class="absolute top-4 right-4 bg-orange-900/50 text-yellow-400 px-3 py-1 text-[12px] border border-orange-500" data-i18n="changelog.v0_1_2.badge"></div>
                     <h2 class="text-xl text-white mb-2" data-i18n="changelog.v0_1_2.title"></h2>
                     <div class="text-gray-500 text-[12px] mb-6" data-i18n="changelog.v0_1_2.date"></div>
-                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-300 mb-6">
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-300">
                         <li data-i18n="changelog.v0_1_2.item1"></li>
                         <li data-i18n="changelog.v0_1_2.item2"></li>
                     </ul>
-                    <div class="mt-4 pt-4 border-t border-white/10">
-                        <h3 class="text-sm font-bold text-orange-400 mb-3" data-i18n="changelog.v0_1_2.next_title"></h3>
-                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                            <li data-i18n="changelog.v0_1_2.next_item1"></li>
-                            <li data-i18n="changelog.v0_1_2.next_item2"></li>
-                            <li data-i18n="changelog.v0_1_2.next_item3"></li>
-                            <li data-i18n="changelog.v0_1_2.next_item4"></li>
-                        </ul>
-                    </div>
                 </div>
 
                 <!-- v0.1.1 -->
@@ -333,8 +374,14 @@
                 <h2 class="text-2xl text-white mb-8" data-i18n="download.title"></h2>
                 
                 <div class="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+                    <!-- CurseForge -->
+                    <a href="https://www.curseforge.com/minecraft/mc-mods/radiance" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
+                        <span class="text-base mb-2 font-bold" data-i18n="download.curseforge.title"></span>
+                        <span class="text-sm text-gray-700 font-medium group-hover:text-black" data-i18n="download.windows_only.meta"></span>
+                    </a>
+
                     <!-- GitHub Release -->
-                    <a href="https://github.com/Minecraft-Radiance/Radiance/releases/tag/v0.1.2-preview" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
+                    <a href="https://github.com/Minecraft-Radiance/Radiance/releases/tag/v0.1.3-alpha" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
                         <span class="text-base mb-2 font-bold" data-i18n="download.github.title"></span>
                         <span class="text-sm text-gray-700 font-medium group-hover:text-black" data-i18n="download.preview.meta"></span>
                     </a>
@@ -345,16 +392,7 @@
                             <span data-i18n="download.modrinth.title"></span>
                             <span class="text-xs opacity-80 ml-1" data-i18n="download.status.review"></span>
                         </span>
-                        <span class="text-sm text-gray-700 font-medium group-hover:text-black" data-i18n="download.preview.meta"></span>
-                    </a>
-
-                    <!-- CurseForge (Review) -->
-                    <a href="https://www.curseforge.com/minecraft/mc-mods/radiance/gallery" target="_blank" rel="noopener noreferrer" class="btn-primary py-6 flex flex-col items-center justify-center group border-orange-500/50">
-                        <span class="text-base mb-2 font-bold">
-                            <span data-i18n="download.curseforge.title"></span>
-                            <span class="text-xs opacity-80 ml-1" data-i18n="download.status.review"></span>
-                        </span>
-                        <span class="text-sm text-gray-700 font-medium group-hover:text-black" data-i18n="download.preview.meta"></span>
+                        <span class="text-sm text-gray-700 font-medium group-hover:text-black" data-i18n="download.windows_only.meta"></span>
                     </a>
 
                     <a href="#docs" class="btn-glass py-6 flex items-center justify-center font-bold tracking-wide uppercase hover:bg-white/10 transition-colors" data-i18n="download.btn_docs">
@@ -400,14 +438,17 @@
         </div>
     </footer>
 
+    <script src="js/translations.js"></script>
     <script>
         // ----------------- 站点配置 (Site Configuration) ----------------- 
         const SITE_CONFIG = {
             logoPath: 'resources/logo-radiance.webp',
             featureImages: {
-                rt: 'https://image.puxuan.cc/PicGo/woods.png',       // Ray Tracing 图片 (支持图床链接)
+                rt: 'https://image.puxuan.cc/PicGo/woods.png',       // Ray Tracing 图片
                 interact: 'https://image.puxuan.cc/PicGo/gloom.png', // Interaction 图片
-                upscale: 'https://image.puxuan.cc/PicGo/underground.png'    // Upscaling 图片
+                upscale: 'https://image.puxuan.cc/PicGo/underground.png',    // Upscaling 图片
+                pbr: 'https://image.puxuan.cc/PicGo/2026-02-09_00.45.30.png', // PBR 图片
+                pipeline: 'https://image.puxuan.cc/PicGo/pipeline.png' // Pipeline 图片
             }
         };
 
@@ -420,7 +461,9 @@
         const featureImgMap = {
             'img-feature-rt': SITE_CONFIG.featureImages.rt,
             'img-feature-interact': SITE_CONFIG.featureImages.interact,
-            'img-feature-upscale': SITE_CONFIG.featureImages.upscale
+            'img-feature-upscale': SITE_CONFIG.featureImages.upscale,
+            'img-feature-pbr': SITE_CONFIG.featureImages.pbr,
+            'img-feature-pipeline': SITE_CONFIG.featureImages.pipeline
         };
 
         for (const [id, url] of Object.entries(featureImgMap)) {
@@ -507,173 +550,6 @@
         });
 
         // ----------------- 多语言系统 (更新版) ----------------- 
-        const translations = {
-            'zh': {
-                'site.title': 'Radiance - Minecraft 极致光影',
-                'site.desc': 'Radiance - 次世代 Minecraft 路径追踪渲染引擎。基于 Vulkan C++ 底层重构，原生支持硬件光线追踪。',
-                'nav.home': '首页',
-                'nav.features': '特性',
-                'nav.gallery': '展示',
-                'nav.docs': '文档',
-                'nav.changelog': '更新日志',
-                'nav.download': '下载',
-                'hero.subtitle': 'VULKAN C++ POWERED RENDERING',
-                'hero.title': '次世代 Minecraft 路径追踪渲染引擎',
-                'hero.desc': '突破 OpenGL 性能瓶颈。Radiance 基于 Vulkan C++ 底层重构，原生支持 Windows 与 Linux 平台的硬件光线追踪。释放硬件极致潜能，重塑方块世界的每一束光。',
-                'hero.btn_download': '下载预览版',
-                'hero.btn_gallery': '查看光影展示',
-                'hero.btn_docs': '阅读安装文档',
-                'features.title': '底层技术革新',
-                'features.card1.title': '<a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> 核心接管',
-                'features.card1.desc': '彻底摒弃OpenGL。启用 GLFW_NO_API 模式，完全接管渲染窗口。利用 <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> 高并发优势，多核性能满血释放。',
-                'features.card2.title': '硬件级光线追踪',
-                'features.card2.desc': '基于 <a href="https://docs.vulkan.org/refpages/latest/refpages/source/VK_KHR_ray_tracing_pipeline.html" target="_blank" class="underline hover:text-orange-400">Vulkan Ray Tracing Pipeline</a> (KHR)。直接调用 RT Core 硬件算力，性能远超软件模拟方案。',
-                'features.card3.title': '多平台极致性能',
-                'features.card3.desc': '完美支持 Windows 与 Linux。得益于 <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> 管线优化，性能显著优于传统着色器，让光追不再是幻灯片。',
-                'gallery.title': '光影展示',
-                'gallery.subtitle': '实时运行录制，感受次世代渲染引擎的魅力',
-                'gallery.video1.title': 'Radiance 官方预告片',
-                'gallery.video1.desc': '沉浸式体验次世代光影。实机演示光线追踪、动态交互与极致性能的完美结合。',
-                'gallery.video2.title': '室内路径追踪展示',
-                'gallery.video2.desc': '展示发光物品、与复杂光路模拟的完美融合。',
-                'gallery.video3.title': '战斗交互光影',
-                'gallery.video3.desc': '史莱姆受击时的动态光源与动作无残影表现。',
-                'features_page.title': 'Radiance Mod 技术特性',
-                'features_page.subtitle': '底层原生代码重写，赋予 Minecraft 次世代渲染能力',
-                'features_page.rt.title': '全路径追踪渲染',
-                'features_page.rt.desc': '不同于传统的光栅化渲染，Radiance 采用全路径追踪（Path Tracing）技术。每一个像素都模拟光线的真实物理行为，经过多次弹射，计算出最精确的颜色。',
-                'features_page.rt.point1': '物理精确的软阴影与环境光遮蔽',
-                'features_page.rt.point2': '动态全局光照 (GI) - 实时计算多次光线反射，实现真实漫射与溢色',
-                'features_page.rt.point3': '全路径追踪 (Path Tracing) - 统一计算反射与阴影，无需堆叠光栅化 Trick',
-                'features_page.interact.title': '独家动态交互体验',
-                'features_page.interact.desc': '打破传统 Shader 的限制。Radiance 真正理解游戏物体：丢出的发光物品能照亮环境并投射阴影，玩家自身也能拥有完美的动态阴影。',
-                'features_page.interact.point1': '全动态实体阴影（玩家、生物、掉落物）',
-                'features_page.interact.point2': '动态光源阴影投射（手持光源、投掷物）',
-                'features_page.upscale.title': '深度学习超分辨率',
-                'features_page.upscale.status': '<a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">DLSS 4</a> 原生集成',
-                'features_page.upscale.desc': '在高分辨率下保持高帧率是光追的难题。Radiance 原生集成了 <a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS</a>，并正在积极适配 AMD FSR，利用 AI 算法在保证画质的前提下，将帧率大幅提升。',
-                'features_page.upscale.point1': '<a href="https://www.nvidia.cn/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS 4</a> 光线重构已就绪',
-                'features_page.upscale.point2': 'AMD FSR 3 支持正在开发中',
-                'download.title': '下载预览版',
-                'download.github.title': 'GitHub Release (目前可用)',
-                'download.modrinth.title': 'Modrinth',
-                'download.curseforge.title': 'CurseForge',
-                'download.status.review': '(审核中)',
-                'download.preview.meta': '支持 Windows & Linux<br>需兼容 Vulkan RT 的 Nvidia GPU',
-                'download.btn_docs': '阅读安装文档',
-                'docs.install.main_title': '安装指南',
-                'docs.install.req_title': '系统需求',
-                'docs.install.req_list': '有 VK_KHR_ray_tracing_pipeline 的 Nvidia GPU （RTX 20系+ 一般都有，具体可以查询<a href="https://vulkan.gpuinfo.org/">这里</a>）',
-                'docs.install.install_title': '安装步骤',
-                'docs.install.install_step': '<ol class="list-decimal list-inside space-y-4"><li>将 Mod 文件放入 <code>mods</code> 文件夹。</li><li>下载下方列出的文件并放入 <code>.minecraft/radiance</code> 文件夹（如果文件夹不存在，请手动创建）。<div class="mt-4 space-y-4 ml-6"><div><h4 class="text-orange-400 font-bold mb-2">Windows (从<a href="https://github.com/NVIDIA/DLSS/tree/v310.3.0/lib/Windows_x86_64/rel" class="underline text-orange-400" target="_blank">此处</a>下载)</h4><ul class="list-disc list-inside text-sm text-gray-300"><li><code>nvngx_dlss.dll</code></li><li><code>nvngx_dlssd.dll</code></li></ul></div><div><h4 class="text-orange-400 font-bold mb-2">Linux (从<a href="https://github.com/NVIDIA/DLSS/tree/v310.3.0/lib/Linux_x86_64/rel" class="underline text-orange-400" target="_blank">此处</a>下载)</h4><ul class="list-disc list-inside text-sm text-gray-300"><li><code>libnvidia-ngx-dlss.so.310.3.0</code></li><li><code>libnvidia-ngx-dlssd.so.310.3.0</code></li></ul></div></div></li></ol><div class="bg-yellow-900/30 border border-yellow-500/50 p-4 mt-8 rounded text-sm text-yellow-200"><span class="font-bold">注意：</span> Windows 用户首先请尝试处理（重命名、删除等）JDK bin 文件夹（<code>{JDK路径}/bin/</code>）中的 <code>msvcp140.dll</code>, <code>vcruntime140.dll</code> 和 <code>vcruntime140_1.dll</code>，使这些文件在该文件夹中不存在。此步骤旨在移除 JDK 对这些库的依赖。然后，安装最新的 <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170" class="underline">Microsoft Visual C++ Redistributable</a>。</div><p class="mt-8 text-gray-400 text-sm italic">更详细的文档 and 技术细节请参考：<a href="https://github.com/Minecraft-Radiance/Radiance" target="_blank" class="text-orange-400 underline ml-1">Radiance Github Repo</a></p>',
-                'changelog.v0_1_1.badge': '预发布',
-                'changelog.v0_1_1.title': 'v0.1.1-preview',
-                'changelog.v0_1_1.date': '2026-01-02',
-                'changelog.v0_1_1.item1': '修复了移动时的画面回闪问题',
-                'changelog.v0_1_2.badge': '预发布',
-                'changelog.v0_1_2.title': 'v0.1.2-preview',
-                'changelog.v0_1_2.date': '2026-01-05',
-                'changelog.v0_1_2.item1': '新增截图功能',
-                'changelog.v0_1_2.item2': '调整曝光算法，提高对高亮区域的灵敏度，减少过度曝光',
-                'changelog.v0_1_2.next_title': '下一步计划：',
-                'changelog.v0_1_2.next_item1': '重构渲染管线，实现模块化与自定义',
-                'changelog.v0_1_2.next_item2': '支持 PBR 材质包',
-                'changelog.v0_1_2.next_item3': '支持更多工业级模块（如 FSR, NRD）',
-                'changelog.v0_1_2.next_item4': '修复已知 Bug',
-                'changelog.v0_1_0.badge': '初始发布',
-                'changelog.v0_1_0.title': 'v0.1.0',
-                'changelog.v0_1_0.date': '2025-12-29',
-                'changelog.v0_1_0.item1': '首个公开预览版，开启次世代光影体验',
-                'changelog.v0_1_0.item2': '完整的 Vulkan 渲染后端实现',
-                'changelog.v0_1_0.item3': '基础硬件光线追踪管线与路径追踪支持,加入DLSS 4支持',
-                'changelog.main_title': 'Radiance版本历史',
-                'footer.copyright': 'Radiance. 非官方 Minecraft Mod 项目.',
-                'footer.credits': 'Features Vulkan & NVIDIA DLSS technology. All trademarks are property of their respective owners.'
-            },
-            'en': {
-                'site.title': 'Radiance - Minecraft Ray Tracing Mod',
-                'site.desc': 'Radiance - Next-Gen Minecraft Path Tracing engine mod. Rebuilt on Vulkan C++ backend, featuring native Hardware Ray Tracing support.',
-                'nav.home': 'Home',
-                'nav.features': 'Features',
-                'nav.gallery': 'Gallery',
-                'nav.docs': 'Wiki',
-                'nav.changelog': 'Changelog',
-                'nav.download': 'Download',
-                'hero.subtitle': 'VULKAN C++ POWERED RENDERING',
-                'hero.title': 'Next-Gen Minecraft Path Tracing Engine',
-                'hero.desc': 'Break free from OpenGL limits. Radiance is rebuilt on a Vulkan C++ backend, featuring native Hardware Ray Tracing on Windows & Linux. Unleash your GPU\'s full potential.',
-                'hero.btn_download': 'Download Preview Version',
-                'hero.btn_gallery': 'View Gallery',
-                'hero.btn_docs': 'Read Installation Docs',
-                'features.title': 'Core Innovations',
-                'features.card1.title': '<a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> Core Overhaul',
-                'features.card1.desc': 'Complete OpenGL Bypass. Replaces the OpenGL pipeline with a highly concurrent <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> backend to unlock true multi-core performance.',
-                'features.card2.title': 'Hardware Ray Tracing',
-                'features.card2.desc': 'Powered by <a href="https://docs.vulkan.org/refpages/latest/refpages/source/VK_KHR_ray_tracing_pipeline.html" target="_blank" class="underline hover:text-orange-400">Vulkan Ray Tracing Pipeline</a> (KHR). Directly harnesses RT Core hardware acceleration, vastly outperforming software emulation.',
-                'features.card3.title': 'Cross-Platform Performance',
-                'features.card3.desc': 'Full support for Windows & Linux. The <a href="https://www.vulkan.org/" target="_blank" class="underline hover:text-orange-400">Vulkan</a> pipeline delivers vastly superior performance over legacy shaders, making ray tracing playable, not a slideshow.',
-                'gallery.title': 'Visual Showcase',
-                'gallery.subtitle': 'Real-time recordings showcasing the power of our rendering engine.',
-                'gallery.video1.title': 'Radiance Official Trailer',
-                'gallery.video1.desc': 'Immerse yourself in next-gen visuals. Featuring Ray Tracing, dynamic interactions, and extreme performance.',
-                'gallery.video2.title': 'Interior Path Tracing',
-                'gallery.video2.desc': 'Perfect fusion of emissive blocks, and complex light paths.',
-                'gallery.video3.title': 'Combat Interaction',
-                'gallery.video3.desc': 'Dynamic light sources and ghost-free motion when attacking Slimes.',
-                'features_page.title': 'Radiance Mod Technical Features',
-                'features_page.subtitle': 'Rebuilt from the ground up to empower Minecraft with next-gen rendering.',
-                'features_page.rt.title': 'Full Path Tracing',
-                'features_page.rt.desc': 'Unlike traditional rasterization, Radiance uses full Path Tracing technology. Every pixel simulates the true physical behavior of light, bouncing multiple times to calculate the most accurate color.',
-                'features_page.rt.point1': 'Physically accurate soft shadows & AO',
-                'features_page.rt.point2': 'Real-time Dynamic GI - Simulates multiple light bounces for true diffusion & bleeding',
-                'features_page.rt.point3': 'Full Path Tracing - Unifies reflections & shadows, eliminating rasterization tricks',
-                'features_page.interact.title': 'Exclusive Dynamic Interaction',
-                'features_page.interact.desc': 'Breaking shader limitations. Radiance understands game objects: thrown light sources illuminate the world and cast shadows, and the player model casts perfect dynamic shadows.',
-                'features_page.interact.point1': 'Full Dynamic Entity Shadows (Player, Mobs, Items)',
-                'features_page.interact.point2': 'Dynamic Light Source Shadow Casting (Handheld & Thrown)',
-                'features_page.upscale.title': 'Deep Learning Upscaling',
-                'features_page.upscale.status': '<a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">DLSS 4</a> NATIVE',
-                'features_page.upscale.desc': 'Maintaining high framerates at high resolutions is a challenge. Radiance natively integrates <a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS</a> and is actively working on AMD FSR support to boost performance without sacrificing quality.',
-                'features_page.upscale.point1': '<a href="https://www.nvidia.com/en-us/geforce/technologies/dlss/" target="_blank" class="underline hover:text-orange-400">NVIDIA DLSS 4</a> Ray Reconstruction Ready',
-                'features_page.upscale.point2': 'AMD FSR 3.0 Support In Progress',
-                'download.title': 'Download Preview Build',
-                'download.github.title': 'GitHub Release (Available Now)',
-                'download.modrinth.title': 'Modrinth',
-                'download.curseforge.title': 'CurseForge',
-                'download.status.review': '(Under Review)',
-                'download.preview.meta': 'Supports Windows & Linux<br>Requires Vulkan RT compatible Nvidia GPU',
-                'download.btn_docs': 'Read Installation Docs',
-                'docs.install.main_title': 'Installation Guide',
-                'docs.install.req_title': 'System Requirements',
-                'docs.install.req_list': 'Nvidia GPU with VK_KHR_ray_tracing_pipeline extension (RTX 20 series+, check details <a href="https://vulkan.gpuinfo.org/">here</a>)',
-                'docs.install.install_title': 'Installation Steps',
-                'docs.install.install_step': '<ol class="list-decimal list-inside space-y-4"><li>Place the mod file into your Minecraft <code>mods</code> folder.</li><li>Download the files listed below to the <code>.minecraft/radiance</code> folder (create it if it doesn\'t exist).<div class="mt-4 space-y-4 ml-6"><div><h4 class="text-orange-400 font-bold mb-2">Windows (Download from <a href="https://github.com/NVIDIA/DLSS/tree/v310.3.0/lib/Windows_x86_64/rel" class="underline text-orange-400" target="_blank">here</a>)</h4><ul class="list-disc list-inside text-sm text-gray-300"><li><code>nvngx_dlss.dll</code></li><li><code>nvngx_dlssd.dll</code></li></ul></div><div><h4 class="text-orange-400 font-bold mb-2">Linux (Download from <a href="https://github.com/NVIDIA/DLSS/tree/v310.3.0/lib/Linux_x86_64/rel" class="underline text-orange-400" target="_blank">here</a>)</h4><ul class="list-disc list-inside text-sm text-gray-300"><li><code>libnvidia-ngx-dlss.so.310.3.0</code></li><li><code>libnvidia-ngx-dlssd.so.310.3.0</code></li></ul></div></div></li></ol><div class="bg-yellow-900/30 border border-yellow-500/50 p-4 mt-8 rounded text-sm text-yellow-200"><span class="font-bold">NOTE:</span> For Windows users, first, try to manipulate (rename, delete, etc.) the <code>msvcp140.dll</code>, <code>vcruntime140.dll</code> and <code>vcruntime140_1.dll</code> in the JDK\'s bin folder (<code>{JDK_PATH}/bin/</code>) so that these files do not exist in that folder. This step aims to remove the JDK\'s dependency on those libraries. Then, install the latest <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170">Microsoft Visual C++ Redistributable</a>.</div><p class="mt-8 text-gray-400 text-sm italic">For more detailed documentation and technical insights, please visit: <a href="https://github.com/Minecraft-Radiance/Radiance" target="_blank" class="text-orange-400 underline ml-1">Radiance Github Repo</a></p>',
-                'changelog.v0_1_1.badge': 'PRE-RELEASE',
-                'changelog.v0_1_1.title': 'v0.1.1-preview',
-                'changelog.v0_1_1.date': '2026-01-02',
-                'changelog.v0_1_1.item1': 'Fixed the issue of frame flashback when moving',
-                'changelog.v0_1_2.badge': 'PRE-RELEASE',
-                'changelog.v0_1_2.title': 'v0.1.2-preview',
-                'changelog.v0_1_2.date': '2026-01-05',
-                'changelog.v0_1_2.item1': 'Screenshot functionality is now available',
-                'changelog.v0_1_2.item2': 'Tuned the exposure algorithm for better sensitivity to bright areas, leading to less over-exposure',
-                'changelog.v0_1_2.next_title': "What's Next:",
-                'changelog.v0_1_2.next_item1': 'Refactor the rendering pipeline to a modularized and customizable one',
-                'changelog.v0_1_2.next_item2': 'PBR texture pack support',
-                'changelog.v0_1_2.next_item3': 'Support for more industrial modules (e.g., FSR, NRD)',
-                'changelog.v0_1_2.next_item4': 'Fixes for known bugs',
-                'changelog.v0_1_0.badge': 'INITIAL RELEASE',
-                'changelog.v0_1_0.title': 'v0.1.0',
-                'changelog.v0_1_0.date': '2025-12-29',
-                'changelog.v0_1_0.item1': 'First public preview version',
-                'changelog.v0_1_0.item2': 'Full Vulkan rendering backend implementation',
-                'changelog.v0_1_0.item3': 'Basic hardware ray tracing, and path tracing support. Features DLSS 4.',
-                'changelog.main_title': 'Radiance Version History',
-                'footer.copyright': 'Radiance. Unofficial Minecraft Mod Project.',
-                'footer.credits': 'Features Vulkan & NVIDIA DLSS technology. All trademarks are property of their respective owners.'
-            }
-        };
-
         // Auto-detect language, default to 'en'
         let userLang = navigator.language || navigator.userLanguage; 
         let currentLang = userLang.startsWith('zh') ? 'zh' : 'en';
@@ -681,38 +557,49 @@
         function updateLanguage(lang) {
             currentLang = lang;
             
+            // Ensure translations are loaded
+            if (!window.translations) {
+                console.error("Translations not loaded!");
+                return;
+            }
+
             // Update Text Content
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    element.innerHTML = translations[lang][key];
+                if (window.translations[lang] && window.translations[lang][key]) {
+                    element.innerHTML = window.translations[lang][key];
                 }
             });
 
-            // Video 1 Toggle
+            // Video Toggle Logic
+            const vAlphaEn = document.getElementById('video-alpha-en');
+            const vAlphaZh = document.getElementById('video-alpha-zh');
             const v1En = document.getElementById('video1-en');
             const v1Zh = document.getElementById('video1-zh');
-            if (v1En && v1Zh) {
-                if (lang === 'zh') {
-                    v1En.classList.add('hidden');
-                    v1Zh.classList.remove('hidden');
-                } else {
-                    v1En.classList.remove('hidden');
-                    v1Zh.classList.add('hidden');
-                }
+
+            if (lang === 'zh') {
+                if (vAlphaEn) vAlphaEn.classList.add('hidden');
+                if (vAlphaZh) vAlphaZh.classList.remove('hidden');
+                if (v1En) v1En.classList.add('hidden');
+                if (v1Zh) v1Zh.classList.remove('hidden');
+            } else {
+                if (vAlphaEn) vAlphaEn.classList.remove('hidden');
+                if (vAlphaZh) vAlphaZh.classList.add('hidden');
+                if (v1En) v1En.classList.remove('hidden');
+                if (v1Zh) v1Zh.classList.add('hidden');
             }
 
             // Update Title & Meta
-            if (translations[lang]) {
-                if (translations[lang]['site.title']) {
-                    document.title = translations[lang]['site.title'];
+            if (window.translations[lang]) {
+                if (window.translations[lang]['site.title']) {
+                    document.title = window.translations[lang]['site.title'];
                 }
-                if (translations[lang]['site.desc']) {
-                    const desc = translations[lang]['site.desc'];
+                if (window.translations[lang]['site.desc']) {
+                    const desc = window.translations[lang]['site.desc'];
                     document.querySelector('meta[name="description"]').setAttribute('content', desc);
-                    document.querySelector('meta[property="og:title"]').setAttribute('content', translations[lang]['site.title']);
+                    document.querySelector('meta[property="og:title"]').setAttribute('content', window.translations[lang]['site.title']);
                     document.querySelector('meta[property="og:description"]').setAttribute('content', desc);
-                    document.querySelector('meta[property="twitter:title"]').setAttribute('content', translations[lang]['site.title']);
+                    document.querySelector('meta[property="twitter:title"]').setAttribute('content', window.translations[lang]['site.title']);
                     document.querySelector('meta[property="twitter:description"]').setAttribute('content', desc);
                 }
             }
